@@ -1,7 +1,7 @@
 (ns tic-tac-toe.core
-  (:require  [clojure.math.numeric-tower :as math])
-  (:require [clojure.string :as str])
-  )
+  (:require  [clojure.math.numeric-tower :as math]
+             [clojure.string :as str])
+)
 
 (def markers ["X" "O"])
 (def empty-marker "_")
@@ -32,11 +32,20 @@
     )
   )
 
+(defn get-board-rows [board]
+  (map #(get-board-row % board) (range 0 (axis-size board))))
+
+
 (defn get-board-column [column-num board]
   (let [size (axis-size board)]
     (map #(nth board %) (range column-num (count board) size)) 
     )
   )
+
+(defn get-board-columns [board]
+ (map #(get-board-column % board) (range 0 (axis-size board)))
+ )
+
 
 (defn get-board-diagonal [diagonal-num board]
   (let [size (axis-size board)]
@@ -46,6 +55,10 @@
       )
     )
   )
+
+(defn get-board-diagonals [board]
+ (map #(get-board-diagonal % board) (range 0 2))
+ )
 
 (defn str-format-row [rowv]
   (str/join "\t" (map #(if-not (nil? %1) %1 empty-marker) rowv))
@@ -63,7 +76,7 @@
   )
 
 (defn get-move [board marker]
-  (or (println (str-format-board board)) (validate-move board (read-string (prompt (str marker "'s move: ")))) (get-move board marker))
+  (or (println (str-format-board board)) (validate-move board (read-string (prompt (str marker "'s move: ")))) (recur board marker))
   )
 
 (defn apply-move [board move marker]
@@ -74,20 +87,18 @@
   (and (not (nil? (first markerv))) (every? #(= (first markerv) %) markerv))
   )
 
-; TODO - change get-board-row to get-board-rows, get-board-column to columns, et al
-; and move mapping into functions 
 (defn win? [board]
   (let [size (axis-size board)]
   (or 
-    (some all-markers-same? (map #(get-board-row % board) (range 0 size)))
-    (some all-markers-same? (map #(get-board-column % board) (range 0 size)))
-    (some all-markers-same? (map #(get-board-diagonal % board) (range 0 2)))
+    (some all-markers-same? (get-board-rows board))
+    (some all-markers-same? (get-board-columns board))
+    (some all-markers-same? (get-board-diagonals board))
     )))
 
 (defn game-turn [board marker]
   (if (win? board)
     (do (println (str-format-board board)) (println (str (other-marker marker) " WINS!")))
-    (game-turn (apply-move board (get-move board marker) marker) (other-marker marker))
+    (recur (apply-move board (get-move board marker) marker) (other-marker marker))
   )
 )
 
