@@ -4,15 +4,18 @@
             [tic-tac-toe.view :as view]
             [tic-tac-toe.move :as move]))
 
-(defn get-marker [player-num]
-  (let [marker (helper/prompt (str "Player " player-num "'s marker:"))]
-    (if (not= (count marker) 1) (do (println "Marker can only be 1 character") (recur player-num)) marker)))
+(defn alter-board [board]
+  (-> board
+       (move/get-move)
+       (board/apply-move)))
 
+(defn turn [marker1 marker2 current-player board]
+  (view/draw marker1 marker2 board)
+  (if-let [winner (game/winner board)]
+    (println (str winner " wins."))
+    (if (board/filled? board)
+      (println "Cats game.")
+      (recur marker1 marker2 (switch-player current-player) (alter-board board)))))
 
-(defn game-turn [board current-marker prev-marker]
-  (if (board/win? board)
-    (do (println (view/str-format-board board)) (println (str prev-marker " WINS!")))
-    (recur (board/apply-move board (move/get-move board) current-marker) prev-marker current-marker)))
-
-(defn new-game [axis-size]
-  (game-turn (board/generate-empty-board axis-size) (get-marker 1) (get-marker 2)))
+(defn new-game [size]
+  (game-turn (board/generate-empty-board size) (get-marker 1) (get-marker 2)))

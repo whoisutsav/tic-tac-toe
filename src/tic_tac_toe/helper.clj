@@ -1,8 +1,4 @@
-(ns tic-tac-toe.helper
-  (:require  [clojure.math.numeric-tower :as math]))
-
-(defn axis-size [board]
-  (math/sqrt (count board)))
+(ns tic-tac-toe.helper) 
 
 (defn prompt [question]
   (println question)

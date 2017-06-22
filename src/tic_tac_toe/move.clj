@@ -14,7 +14,7 @@
   (contains? (set (range 0 (count board))) move))
 
 (defn- is-empty? [board move]
-  (not (board/is-occupied? board move)))
+  (nil? (board/player-at board move)))
 
 (defn- get-errors [board move]
   (cond

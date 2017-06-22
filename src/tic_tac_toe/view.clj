@@ -1,15 +1,20 @@
 (ns tic-tac-toe.view 
   (:require [clojure.string :as str]
-            [tic-tac-toe.board :as board]
-            [tic-tac-toe.helper :as helper]))
+            [tic-tac-toe.board :as board]))
 
 (def empty-marker "_")
 
-(defn str-format-row [rowv]
-  (str/join "\t" (map #(if-not (nil? %1) %1 empty-marker) rowv)))
+(defn- fill-board [marker1 marker2 board]
+      (map #(case (board/player-at % board)
+                1 marker1
+                2 marker2
+                empty-marker) (range 0 (count board))))
 
-(defn str-format-board [board]
-  (reduce #(str %1 (str-format-row %2) "\n") "" (map #(board/get-board-row % board) (range 0 (helper/axis-size board)))))
+(defn- format-row [row]
+  (reduce str "" (interpose "\t" row)))
 
-(defn print-board [board]
-  (println (str-format-board board)))
+(defn draw [marker1 marker2 board]
+  (loop [rows (partition (board/axis-size board) (fill-board marker1 marker2 board))]
+    (when-let [row (first rows)] 
+      (println (format-row row))
+      (recur (rest rows)))))
