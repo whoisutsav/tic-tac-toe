@@ -5,16 +5,16 @@
 (def empty-marker "_")
 
 (defn- fill-board [marker1 marker2 board]
-      (map #(case (board/player-at % board)
+      (map #(case (board/get-player %)
                 1 marker1
                 2 marker2
-                empty-marker) (range 0 (count board))))
+                empty-marker) board))
 
 (defn- format-row [row]
   (reduce str "" (interpose "\t" row)))
 
 (defn draw [marker1 marker2 board]
-  (loop [rows (partition (board/axis-size board) (fill-board marker1 marker2 board))]
+  (loop [rows (partition 3 (fill-board marker1 marker2 board))]
     (when-let [row (first rows)] 
       (println (format-row row))
       (recur (rest rows)))))

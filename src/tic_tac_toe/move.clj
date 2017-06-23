@@ -14,12 +14,12 @@
   (contains? (set (range 0 (count board))) move))
 
 (defn- is-empty? [board move]
-  (nil? (board/player-at board move)))
+  (not (board/is-occupied? move board)))
 
 (defn- get-errors [board move]
   (cond
     (not (is-number? move)) {:error "Move must be a number"}
-    (not (is-in-range? board (read-string move))) {:error "Move must be between 1 and size of board"}
+    (not (is-in-range? board (read-string move))) {:error "Move must be between 0 and size of board"}
     (not (is-empty? board (read-string move))) {:error "Space is occupied"}
     :else {:error nil})) 
 
