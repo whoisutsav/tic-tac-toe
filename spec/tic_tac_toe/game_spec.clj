@@ -1,6 +1,6 @@
 (ns tic-tac-toe.game
   (:require [speclj.core :refer :all]
-            [tic-tac-toe.game-loop :refer :all]
+            [tic-tac-toe.game :refer :all]
             [tic-tac-toe.board :as board]))
 
 (describe "game-loop"
