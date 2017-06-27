@@ -1,25 +1,20 @@
 (ns tic-tac-toe.game
-  (:require [tic-tac-toe.helper :as helper]
-            [tic-tac-toe.board :as board]
-            [tic-tac-toe.view :as view]
-            [tic-tac-toe.move :as move]))
+  (:require [tic-tac-toe.console-output :as console-output]
+            [tic-tac-toe.turn :as turn]
+            [tic-tac-toe.decision :as decision]))
 
-;(defn alter-board [board]
-;  (-> board
-;       (move/get-move)
-;       (board/apply-move)))
-;
-;(defn game-loop [turn]
-;  (if-let [winner (decision/winner (:board turn))]
-;      (println (str "Player " winner " wins."))
-;      (if (decision/filled? board)
-;        (println "Cats game.")
-;        (recur (assoc {:board (alter-board board)})))))
+(defn game-loop [turn]
+  (console-output/print-board (:markers turn) (:board turn))
+  (let [finished-turn (turn/take-turn turn)]
+    (if-let [winner (decision/winner (:board finished-turn))]
+      (console-output/print-message (str winner " wins."))
+      (if (decision/no-more-moves? (:board finished-turn))
+             (console-output/print-message "Cats game.")
+             (recur finished-turn)))))
 
-(defn new-game [size]
-;  (game-turn {
-;              :board (board/generate-empty-board size)
-;              :markers [ (get-marker 1) (get-marker 2)]
-;              :current-player 1})
-;  
-  )
+
+(defn new-game [board]
+  (game-loop {
+              :board board
+              :markers {:x "X" :o "O"}
+              :current-player :x}))
