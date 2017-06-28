@@ -2,16 +2,6 @@
   (:require [speclj.core :refer :all]
             [tic-tac-toe.decision :refer :all]))
 
-(describe "no-more-moves?"
-          (it "returns true if game is over"
-              (should= true (no-more-moves? [:o :x :o
-                                    :o :x :x
-                                    :o :o :x ])))
-          (it "returns false is game is not over"
-              (should= false (no-more-moves? [:x :o :_
-                                     :_ :_ :_
-                                     :_ :_ :_ ]))))
-
 (describe "winner"
           (it "returns nil for no winner"
               (should= nil (winner [:_ :_ :_
@@ -29,3 +19,15 @@
               (should= :o (winner [:o :x :_
                                    :x :o :_
                                    :x :_ :o]))))
+
+(describe "over?"
+          (it "returns true if game is won"
+              (should= true (over? [:x :x :x
+                                    :_ :o :o
+                                    :_ :_ :_])))
+          (it "returns true if board has no spaces left"
+              (should= true (over? [:x :o :x
+                                    :x :o :x
+                                    :o :x :o ]))
+              )
+          )

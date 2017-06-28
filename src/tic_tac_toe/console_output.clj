@@ -18,3 +18,9 @@
 
 (defn print-message [message]
   (println message))
+
+(defn print-winner [marker]
+  (println (str "Player " marker " wins!")))
+
+(defn print-draw []
+  (println "Cats game"))

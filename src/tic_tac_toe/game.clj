@@ -3,14 +3,18 @@
             [tic-tac-toe.turn :as turn]
             [tic-tac-toe.decision :as decision]))
 
+
+(defn- complete-game [turn]
+  (if-let [winner (decision/winner (:board turn))]
+    (console-output/print-winner winner)
+    (console-output/print-draw)))
+
 (defn game-loop [turn]
-  (let [{:keys [markers board]} turn] (console-output/print-board markers turn)
+  (console-output/print-board (:markers turn) (:board turn))
   (let [{new-board :board :as  finished-turn} (turn/take-turn turn)]
-    (if-let [winner (decision/winner new-board)]
-      (console-output/print-message (str winner " wins."))
-      (if (decision/no-more-moves? new-board)
-             (console-output/print-message "Cats game.")
-             (recur finished-turn))))))
+    (if (decision/over? new-board)
+      (complete-game finished-turn)
+      (recur finished-turn))))
 
 
 (defn new-game [board]

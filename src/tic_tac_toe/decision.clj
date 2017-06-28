@@ -5,7 +5,7 @@
            [0 3 6] [1 4 7] [2 5 8]
            [0 4 8] [2 4 6]])
 
-(defn no-more-moves? [board]
+(defn- no-more-moves? [board]
   (not-any? #(board/empty-space? % board) 
           (range 0 (count board)))) 
 
@@ -16,3 +16,6 @@
         (first marks)
         (recur (rest lines))))))
 
+(defn over? [board]
+  (or (not= (winner board) nil)
+      (no-more-moves? board)))
