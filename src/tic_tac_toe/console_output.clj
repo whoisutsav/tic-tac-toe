@@ -7,20 +7,24 @@
 (defn- fill-board [markers board]
       (map #(get markers % empty-marker) board))
 
-(defn- format-row [row]
-  (reduce str "" (interpose "\t" row)))
-
 (defn print-board [markers board]
   (loop [rows (partition 3 (fill-board markers board))]
     (when-let [row (first rows)] 
-      (println (format-row row))
+      (println (reduce str "" (interpose "\t" row)))
       (recur (rest rows)))))
 
-(defn print-message [message]
+(defn show-error [message]
   (println message))
 
-(defn print-winner [marker]
+(defn declare-winner [marker]
   (println (str "Player " marker " wins!")))
 
-(defn print-draw []
+(defn declare-draw []
   (println "Cats game"))
+
+(defn show-move-prompt [current-marker markers board]
+  (print-board markers board)
+  (println (str current-marker ": please enter move.")))
+
+(defn get-user-input []
+  (str/trim (read-line)))

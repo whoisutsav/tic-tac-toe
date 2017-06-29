@@ -12,12 +12,22 @@
                                             :_ :_ :_ ])))))
 
 
-(describe "print-message"
+(describe "show-error"
           (it "prints message to the console"
-              (should= "my message\n" (with-out-str (print-message "my message")))))
+              (should= "my message\n" (with-out-str (show-error "my message")))))
 
-(describe "print-winner"
-          (it "prints winning message to the console" (should= "Player X wins!\n" (with-out-str (print-winner "X")))))
+(describe "declare-winner"
+          (it "prints winning message to the console" (should= "Player X wins!\n" (with-out-str (declare-winner "X")))))
 
-(describe "print-draw"
-          (it "prints draw message to the console", (should= "Cats game\n" (with-out-str (print-draw)))))
+(describe "declare-draw"
+          (it "prints draw message to the console", (should= "Cats game\n" (with-out-str (declare-draw)))))
+
+(describe "show-move-prompt"
+  (it "prints prompt"
+    (should-contain "X: please enter move" (with-out-str (with-in-str
+                   " 9\t" (show-move-prompt "X" {:x "X" :o "O"} []))))))
+
+
+(describe "get-user-input"
+          (it "gets and trims input"
+              (should= "9" (with-in-str " 9 \t" (get-user-input)))))

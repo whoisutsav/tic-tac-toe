@@ -1,14 +1,13 @@
 (ns tic-tac-toe.player
-  (:require [tic-tac-toe.console-input :as console-input]
-            [tic-tac-toe.console-output :as console-output]
+  (:require [tic-tac-toe.console-output :as console-output]
             [tic-tac-toe.validation :as validation]))
 
-
-(defn get-move [board marker]
-  (loop [move (console-input/prompt-for-move marker)] 
+(defn get-move [board current-marker markers]
+  (console-output/show-move-prompt current-marker markers board)
+  (loop [move (console-output/get-user-input)] 
     (if-let [error-str (:error (validation/move board move))] 
-      (do (console-output/print-message error-str) 
-          (recur (console-input/prompt-for-move marker)))
+      (do (console-output/show-error error-str) 
+          (recur (console-output/get-user-input)))
       (read-string move))))
 
 
