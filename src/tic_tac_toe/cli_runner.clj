@@ -1,5 +1,5 @@
-(ns tic-tac-toe.game
-  (:require [tic-tac-toe.console-output :as console-output]
+(ns tic-tac-toe.cli-runner
+  (:require [tic-tac-toe.console :as console]
             [tic-tac-toe.player :as player]
             [tic-tac-toe.board :as board]
             [tic-tac-toe.decision :as decision]))
@@ -12,24 +12,19 @@
 (defn- take-turn [board markers player]
   (-> board
       (player/get-move (player markers) markers)
-      (board/apply-move player)))
+      (board/apply-move board player)))
 
 (defn- complete-game [markers board]
   (if-let [winner (decision/winner board)]
-    (console-output/declare-winner (winner markers))
-    (console-output/declare-draw)))
+    (console/declare-winner (winner markers))
+    (console/declare-draw)))
 
-(defn game-loop [{:keys [markers board player]}]
+(defn run [{:keys [board player markers]}]
   (if (decision/over? board)
       (complete-game markers board)
       (recur {
-              :markers markers
               :board (take-turn board markers player)
-              :player (switch-player player)})))
+              :player (switch-player player)
+              :markers markers})))
 
 
-(defn new-game [board]
-  (game-loop {
-              :board board
-              :markers {:x "X" :o "O"}
-              :players [:x :o]}))

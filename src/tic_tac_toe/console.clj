@@ -1,4 +1,4 @@
-(ns tic-tac-toe.console-output 
+(ns tic-tac-toe.console 
   (:require [clojure.string :as str]
             [tic-tac-toe.board :as board]))
 
@@ -13,7 +13,7 @@
       (println (reduce str "" (interpose "\t" row)))
       (recur (rest rows)))))
 
-(defn show-error [message]
+(defn show-message [message]
   (println message))
 
 (defn declare-winner [marker]

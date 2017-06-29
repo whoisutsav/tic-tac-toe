@@ -1,4 +1,4 @@
-(ns tic-tac-toe.console-output-spec
+(ns tic-tac-toe.console
   (:require [speclj.core :refer :all]
             [tic-tac-toe.console-output :refer :all]))
 
@@ -12,9 +12,9 @@
                                             :_ :_ :_ ])))))
 
 
-(describe "show-error"
+(describe "show-message"
           (it "prints message to the console"
-              (should= "my message\n" (with-out-str (show-error "my message")))))
+              (should= "my message\n" (with-out-str (show-message "my message")))))
 
 (describe "declare-winner"
           (it "prints winning message to the console" (should= "Player X wins!\n" (with-out-str (declare-winner "X")))))
