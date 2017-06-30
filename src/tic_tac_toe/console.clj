@@ -26,5 +26,8 @@
   (print-board markers board)
   (println (str current-marker ": please enter move.")))
 
+(defn show-marker-prompt [player-num]
+  (println (str "Player " player-num ", please enter marker:")))
+
 (defn get-user-input []
   (str/trim (read-line)))

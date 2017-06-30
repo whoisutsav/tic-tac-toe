@@ -1,18 +1,16 @@
 (ns tic-tac-toe.cli-main
-  (:require [tic-tac-toe.console :as console]
-            [tic-tac-toe.board :as board]
+  (:require [tic-tac-toe.board :as board]
+            [tic-tac-toe.player :as player]
             [tic-tac-toe.cli-runner :as cli-runner]))
 
-(defn- get-markers []
-  (console/show-message "Player 1 enter your marker")
-  (let [markers (assoc {} :x (console/get-user-input))]
-    (console/show-message "Player 2 enter your marker")
-    (assoc markers :o (console/get-user-input)))) 
+(defn- get-player-markers []
+  (let [marker1 (player/get-marker 1)
+        marker2 (player/get-marker 2)]
+    {:x marker1 :o marker2})) 
 
 (defn -main []
-  (-> {}
-      (into {:board (board/new-board)})
-      (into {:markers (get-markers)})
+  (-> {:board (board/new-board)}
+      (into {:markers (get-player-markers)})
       (into {:player :x})
       (cli-runner/run)))
 
