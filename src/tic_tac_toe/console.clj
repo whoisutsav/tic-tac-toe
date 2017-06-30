@@ -4,16 +4,16 @@
 
 (def empty-marker "_")
 
-(defn- fill-board [markers board]
+(defn- populate-markers [markers board]
       (map #(get markers % empty-marker) board))
 
 (defn print-board [markers board]
-  (loop [rows (partition 3 (fill-board markers board))]
+  (loop [rows (partition 3 (populate-markers markers board))]
     (when-let [row (first rows)] 
       (println (reduce str "" (interpose "\t" row)))
       (recur (rest rows)))))
 
-(defn show-message [message]
+(defn show-error [message]
   (println message))
 
 (defn declare-winner [marker]
