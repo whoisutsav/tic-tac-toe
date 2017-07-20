@@ -12,8 +12,8 @@
 (describe "get-marker"
           (around [it] (with-out-str (it)))
           (it "prompts the user"
-              (should-contain "Player 1, please enter marker:"
+              (should-contain "Player 2, please enter marker:"
                               (with-out-str (with-in-str "A\n"
-                                              (get-marker 1)))))
+                                              (get-marker :opponent)))))
           (it "gets the player's marker until it's valid"
               (should= "Z" (with-in-str "0\nBB\nZ\n" (get-marker 1)))))

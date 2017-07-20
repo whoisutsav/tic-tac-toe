@@ -3,12 +3,12 @@
             [tic-tac-toe.validation :as validation]))
 
 
-(defn get-marker [player-num]
-  (console/show-marker-prompt player-num)
+(defn get-marker [player]
+  (console/show-marker-prompt (if (= :primary player) 1 2))
   (let [marker (console/get-user-input)]
     (if-let [error-str (:error (validation/marker marker))]
       (do (console/show-error error-str)
-          (recur player-num))
+          (recur player))
       marker)))
 
 
