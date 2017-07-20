@@ -3,15 +3,12 @@
             [tic-tac-toe.player :as player]
             [tic-tac-toe.cli-runner :as cli-runner]))
 
-(defn- get-player-markers []
-  (let [marker1 (player/get-marker 1)
-        marker2 (player/get-marker 2)]
-    {:x marker1 :o marker2})) 
-
 (defn -main []
-  (-> {:board (board/new-board)}
-      (into {:markers (get-player-markers)})
-      (into {:player :x})
-      (cli-runner/run)))
+  (let [marker (player/get-marker 1) 
+        opponent-marker (player/get-marker 2)] 
+    (cli-runner/run
+      {:board (board/new-board)
+       :markers {:x marker :o opponent-marker}
+       :player :x })))
 
 

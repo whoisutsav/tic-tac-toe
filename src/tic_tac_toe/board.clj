@@ -13,4 +13,5 @@
 (defn empty-space? [cell board]
   (= empty-space (nth board cell)))
 
-
+(defn size [board]
+  (count board))

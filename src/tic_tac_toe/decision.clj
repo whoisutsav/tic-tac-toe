@@ -7,7 +7,7 @@
 
 (defn- no-more-moves? [board]
   (not-any? #(board/empty-space? % board) 
-          (range 0 (count board)))) 
+          (range 0 (board/size board)))) 
 
 (defn winner [board]
   (loop [lines win-lines]
