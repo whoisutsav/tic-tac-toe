@@ -4,30 +4,34 @@
 
 (def empty-marker "_")
 
-(defn- populate-markers [markers board]
-      (map #(get markers % empty-marker) board))
+(defn- populate-markers [players board]
+      (map #(get (get players % ) :marker empty-marker) board))
 
-(defn print-board [markers board]
-  (loop [rows (partition 3 (populate-markers markers board))]
+(defn print-board [players board]
+  (loop [rows (partition 3 (populate-markers players board))]
     (when-let [row (first rows)] 
       (println (reduce str "" (interpose "\t" row)))
       (recur (rest rows)))))
 
+(defn print-computer-move [move]
+  (println (str "Computer chose space " move)))
+
 (defn show-error [message]
   (println message))
 
-(defn declare-winner [marker]
-  (println (str "Player " marker " wins!")))
+(defn declare-winner [player]
+  (println (str "Player " (:marker player) " wins!")))
 
 (defn declare-draw []
   (println "Cats game"))
 
-(defn show-move-prompt [current-marker markers board]
-  (print-board markers board)
-  (println (str current-marker ": please enter move.")))
+(defn get-user-input []
+  (str/trim (read-line)))
+
+(defn prompt-for-move [marker board]
+  (println (str marker ": please enter move."))
+  (get-user-input))
 
 (defn show-marker-prompt [player-num]
   (println (str "Player " player-num ", please enter marker:")))
 
-(defn get-user-input []
-  (str/trim (read-line)))

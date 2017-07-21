@@ -9,7 +9,7 @@
                   (with-out-str (with-in-str "0\n1\n3\n4\n6" 
                      (run { 
                            :board (board/new-board)
-                           :markers {:x "X" :o "O"}
+                           :players {:x {:marker "X" :type :human} :o {:marker "O" :type :human}}
                            :current-player :x})))))
 
           (it "plays until no moves left"
@@ -17,5 +17,5 @@
                (with-out-str (with-in-str "0\n1\n2\n3\n4\n8\n5\n6\n7" 
                   (run {
                         :board (board/new-board)
-                        :markers {:x "X" :o "O"}
+                        :players {:x {:marker "X" :type :human} :o {:marker "O" :type :human}}
                         :current-player :x}))))))

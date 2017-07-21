@@ -2,11 +2,15 @@
   (:require [speclj.core :refer :all]
             [tic-tac-toe.player :refer :all]))
 
-(describe "get-move"
+(describe "get-move human"
           (it "prints error if move is invalid" 
-              (should-contain "Move must be a number" (with-out-str (with-in-str "Z\n1" (get-move [:_ :_ :_ :_] "X" {:x "X" :o "O"})))))
+              (should-contain "Move must be a number" (with-out-str (with-in-str "Z\n1" (get-move [:_ :_ :_ :_] {:marker "X" :type :human})))))
 
-          (it "keeps getting user input until move is valid" (with-out-str (should= 2 (with-in-str "Z\n-1\n8\n0\n    2  \t " (get-move [:1 :_ :_ :_] "X" {:x "X" :o "O"}))))))
+          (it "keeps getting user input until move is valid" (with-out-str (should= 2 (with-in-str "Z\n-1\n8\n0\n    2  \t " (get-move [:x :_ :_ :_] {:marker "X" :type :human}))))))
+
+(describe "get-move computer"
+          (it "finds an empty space on the board"
+              (with-out-str (should= 3 (get-move [:x :o :x :_] {:type :computer})))))
 
 
 (describe "get-marker"

@@ -9,22 +9,23 @@
     :x :o
     :o :x))
 
-(defn- take-turn [board markers current-player]
-  (-> board
-      (player/get-move (current-player markers) markers)
-      (board/apply-move board current-player)))
 
-(defn- complete-game [markers board]
+(defn- take-turn [board players current-player]
+  (console/print-board players board)
+  (let [move (player/get-move board (current-player players))]
+    (board/apply-move move board current-player)))
+
+(defn- complete-game [players board]
   (if-let [winner (decision/winner board)]
-    (console/declare-winner (winner markers))
+    (console/declare-winner (winner players))
     (console/declare-draw)))
 
-(defn run [{:keys [board current-player markers]}]
+(defn run [{:keys [board current-player players]}]
   (if (decision/over? board)
-      (complete-game markers board)
+      (complete-game players board)
       (recur {
-              :board (take-turn board markers current-player)
+              :board (take-turn board players current-player)
               :current-player (switch-player current-player)
-              :markers markers})))
+              :players players})))
 
 
