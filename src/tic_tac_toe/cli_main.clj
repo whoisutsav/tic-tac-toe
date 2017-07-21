@@ -9,6 +9,6 @@
     (cli-runner/run
       {:board (board/new-board)
        :markers {:x marker :o opponent-marker}
-       :player :x })))
+       :current-player :x })))
 
 
