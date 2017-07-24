@@ -9,13 +9,13 @@
                   (with-out-str (with-in-str "0\n1\n3\n4\n6" 
                      (run { 
                            :board (board/new-board)
-                           :players {:x {:marker "X" :type :human} :o {:marker "O" :type :human}}
-                           :current-player :x})))))
+                           :players {"X" {:type :human} "O" {:type :human}}
+                           :current-player "X"})))))
 
           (it "plays until no moves left"
              (should-contain "Cats game"
                (with-out-str (with-in-str "0\n1\n2\n3\n4\n8\n5\n6\n7" 
                   (run {
                         :board (board/new-board)
-                        :players {:x {:marker "X" :type :human} :o {:marker "O" :type :human}}
-                        :current-player :x}))))))
+                        :players {"X" {:type :human} "O" {:type :human}}
+                        :current-player "X"}))))))

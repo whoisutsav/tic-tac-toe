@@ -19,8 +19,8 @@
 (defn show-error [message]
   (println message))
 
-(defn declare-winner [player]
-  (println (str "Player " (:marker player) " wins!")))
+(defn declare-winner [marker]
+  (println (str "Player " marker " wins!")))
 
 (defn declare-draw []
   (println "Cats game"))

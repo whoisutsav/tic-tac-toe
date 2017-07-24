@@ -12,13 +12,13 @@
           (recur player))
       marker)))
 
-(defmulti get-move (fn [board player] (:type player)))
+(defmulti get-move (fn [board marker player] (:type player)))
 
-(defmethod get-move :human [board player]
-  (let [move (console/prompt-for-move (:marker player) board)] 
+(defmethod get-move :human [board marker player]
+  (let [move (console/prompt-for-move marker board)] 
     (if-let [error-str (:error (validation/move board move))] 
       (do (console/show-error error-str) 
-          (recur board player))
+          (recur board marker player))
       (read-string move))))
 
 (defn- find-empty-space [board]
@@ -27,7 +27,7 @@
      move
      (recur board))))
 
-(defmethod get-move :computer [board player]
+(defmethod get-move :computer [board marker player]
   (let [move (find-empty-space board)]
     (console/print-computer-move move)
     move))

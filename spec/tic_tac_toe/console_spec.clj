@@ -20,7 +20,7 @@
               (should= "my message\n" (with-out-str (show-error "my message")))))
 
 (describe "declare-winner"
-          (it "prints winning message to the console" (should= "Player X wins!\n" (with-out-str (declare-winner {:marker "X"})))))
+          (it "prints winning message to the console" (should= "Player X wins!\n" (with-out-str (declare-winner "X")))))
 
 (describe "declare-draw"
           (it "prints draw message to the console", (should= "Cats game\n" (with-out-str (declare-draw)))))

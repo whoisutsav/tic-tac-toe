@@ -12,9 +12,10 @@
 (defn winner [board]
   (loop [lines win-lines]
     (when-first [line lines]
-      (let [marks (map #(nth board %) line)] 
-        (if (or (= marks (repeat 3 :x)) (= marks (repeat 3 :o)))
-        (first marks)
+      (let [marks (map #(nth board %) line)
+            first-mark (first marks)] 
+        (if (and (not= :_ first-mark) (every? #(= first-mark %) marks))
+        first-mark 
         (recur (rest lines)))))))
 
 (defn over? [board]
