@@ -10,7 +10,7 @@
                      (run { 
                            :board (board/new-board)
                            :players {"X" {:type :human} "O" {:type :human}}
-                           :current-player "X"})))))
+                           :current-marker "X"})))))
 
           (it "plays until no moves left"
              (should-contain "Cats game"
@@ -18,4 +18,4 @@
                   (run {
                         :board (board/new-board)
                         :players {"X" {:type :human} "O" {:type :human}}
-                        :current-player "X"}))))))
+                        :current-marker "X"}))))))
