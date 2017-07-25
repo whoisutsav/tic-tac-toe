@@ -4,17 +4,12 @@
             [tic-tac-toe.board :as board]
             [tic-tac-toe.decision :as decision]))
 
-(defn- swap-marker [current-marker players]
-  (let [markers (keys players)]
-    (cond 
-      (= (first markers) current-marker) (second markers)
-      :else (first markers))))
-
-(defn- take-turn [board current-marker players]
+(defn- take-turn [board player]
   (console/print-board board)
-  (console/print-turn-message current-marker)
-  (let [cell (player/get-move board (current-marker players))]
-    (board/put-marker board cell current-marker)))
+  (let [marker (:marker player)] 
+    (console/print-turn-message marker)
+    (let [move (player/get-move board player)]
+      (board/put-marker board move marker))))
 
 (defn- complete-game [board]
   (console/print-board board)
@@ -22,12 +17,13 @@
     (console/declare-winner winner)
     (console/declare-draw)))
 
-(defn run [{:keys [board current-marker players]}]
+(defn run [{:keys [board current-player opponent-player]}]
   (if (decision/over? board)
       (complete-game board)
-      (recur {
-              :board (take-turn board current-marker players)
-              :current-marker (swap-marker current-marker players)
-              :players players})))
+      (let [updated-board (take-turn board current-player)]
+        (recur {
+              :board updated-board 
+              :current-player opponent-player
+              :opponent-player current-player}))))
 
 

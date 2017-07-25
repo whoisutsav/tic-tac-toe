@@ -8,7 +8,7 @@
         opponent-marker (player/get-marker :opponent)] 
     (cli-runner/run
       {:board (board/new-board)
-       :players {current-marker {:type :human} opponent-marker {:type :computer}}
-       :current-marker current-marker})))
+       :current-player {:marker current-marker :type :human}
+       :opponent-player {:marker opponent-marker :type :computer}})))
 
 
