@@ -1,7 +1,7 @@
-(ns tic-tac-toe.validation-helper-spec
+(ns tic-tac-toe.validation-predicates-spec
   (:require [speclj.core :refer :all]
             [tic-tac-toe.board :as board]
-            [tic-tac-toe.validation-helper :refer :all]))
+            [tic-tac-toe.validation-predicates :refer :all]))
 
 (describe "numeric?"
           (it "returns true if string is numeric"
