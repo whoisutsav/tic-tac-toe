@@ -8,11 +8,10 @@
 (defn new-board []
  (vec (repeat 9 empty-space)))
 
-(defn apply-move [board move marker]
-  (assoc board (dec move) marker))
+(defn put-marker [board cell marker]
+  (assoc board (dec cell) marker))
 
-; TODO - rename to get-cell?
-(defn bget [cell board]
+(defn get-marker [cell board]
   (let [marker (nth board (dec cell))]
     (if (= empty-space marker)
       nil

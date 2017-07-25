@@ -4,22 +4,26 @@
 
 (def empty-space "_")
 
-;TODO name this something else, simplify
-(defn- populate-spaces [board]
-      (map #(if (nil? (board/bget % board)) % (name (board/bget % board))) (range 1 (inc (board/size board)))))
+(defn- populate-numbers [board]
+      (map 
+        #(if-let [marker (board/get-marker % board)] 
+           (name marker)
+           %) 
+        (range 1 (inc (board/size board)))))
 
-(defn print-board2 [board]
-  (loop [rows (partition 3 (populate-spaces board))]
-    (when-let [row (first rows)] 
-      (println (str "\t| " (reduce str "" (interpose " | " row)) " |"))
-      (recur (rest rows)))))
+(defn- format-row [row]
+  (str "\t| " (reduce str "" (interpose " | " row)) " |\n")) 
+
+(defn format-board [board]
+  (->> (populate-numbers board)
+       (partition 3)
+       (map format-row)
+       (reduce str)))
 
 (defn print-board [board]
-  (println)
-  (println (apply str "\t" (repeat 13 "-")))
-  (print-board2 board)
-  (println (apply str "\t" (repeat 13 "-")))
-  (println))
+  (println "\n\t-------------")
+  (print (format-board board))
+  (println "\t-------------\n"))
 
 (defn print-turn-message [marker]
   (println (str (name marker) "'s turn")))
@@ -27,8 +31,14 @@
 (defn print-computer-move [move]
   (println (str "Computer chose space " move)))
 
-(defn show-error [message]
+(defn print-error [message]
   (println message))
+
+(defn print-marker-prompt [player-num]
+  (println (str "Player " player-num ", please enter marker:")))
+
+(defn print-move-prompt []
+  (println "Please enter move:"))
 
 (defn declare-winner [marker]
   (println (str "Player " (name marker) " wins!")))
@@ -39,10 +49,4 @@
 (defn get-user-input []
   (str/trim (read-line)))
 
-(defn prompt-for-move []
-  (println (str "Please enter move:"))
-  (get-user-input))
-
-(defn show-marker-prompt [player-num]
-  (println (str "Player " player-num ", please enter marker:")))
 

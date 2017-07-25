@@ -6,15 +6,15 @@
 
 (defn- swap-marker [current-marker players]
   (let [markers (keys players)]
-    (if (= (first markers) current-marker)
-      (second markers)
-      (first markers))))
+    (cond 
+      (= (first markers) current-marker) (second markers)
+      :else (first markers))))
 
-(defn- take-turn [board players marker]
+(defn- take-turn [board current-marker players]
   (console/print-board board)
-  (console/print-turn-message marker)
-  (let [move (player/get-move board (marker players))]
-    (board/apply-move board move marker)))
+  (console/print-turn-message current-marker)
+  (let [cell (player/get-move board (current-marker players))]
+    (board/put-marker board cell current-marker)))
 
 (defn- complete-game [board]
   (console/print-board board)
@@ -26,7 +26,7 @@
   (if (decision/over? board)
       (complete-game board)
       (recur {
-              :board (take-turn board players current-marker)
+              :board (take-turn board current-marker players)
               :current-marker (swap-marker current-marker players)
               :players players})))
 

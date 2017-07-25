@@ -6,13 +6,13 @@
                 [1 5 9] [3 5 7]])
 
 (defn- no-more-moves? [board]
-  (not-any? #(nil? (board/bget % board)) 
+  (not-any? #(nil? (board/get-marker % board)) 
           (range 1 (inc (board/size board))))) 
 
 (defn winner [board]
   (loop [lines win-lines]
     (when-first [line lines]
-      (let [marks (map #(board/bget % board) line)
+      (let [marks (map #(board/get-marker % board) line)
             first-mark (first marks)] 
         (if (and (not= nil first-mark) (every? #(= first-mark %) marks))
         first-mark 

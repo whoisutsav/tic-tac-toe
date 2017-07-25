@@ -19,9 +19,19 @@
           (it "prints message"
               (should-contain "Computer chose space 5" (with-out-str (print-computer-move 5)))))
 
-(describe "show-error"
-          (it "prints message to the console"
-              (should= "my message\n" (with-out-str (show-error "my message")))))
+(describe "print-error"
+          (it "prints message"
+              (should= "my message\n" (with-out-str (print-error "my message")))))
+
+(describe "print-marker-prompt"
+  (it "prints message"
+    (should-contain "Player 1, please enter marker:" (with-out-str (with-in-str
+                   " 9\t" (print-marker-prompt 1))))))
+
+(describe "print-move-prompt"
+  (it "prints message"
+    (should-contain "Please enter move:" (with-out-str (with-in-str
+                   " 9\t" (print-move-prompt))))))
 
 (describe "declare-winner"
           (it "prints winning message to the console" (should= "Player X wins!\n" (with-out-str (declare-winner "X")))))
@@ -29,10 +39,6 @@
 (describe "declare-draw"
           (it "prints draw message to the console", (should= "Cats game.\n" (with-out-str (declare-draw)))))
 
-(describe "prompt-for-move"
-  (it "prints prompt"
-    (should-contain "Please enter move:" (with-out-str (with-in-str
-                   " 9\t" (prompt-for-move))))))
 
 
 (describe "get-user-input"
