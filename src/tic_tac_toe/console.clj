@@ -2,16 +2,24 @@
   (:require [clojure.string :as str]
             [tic-tac-toe.board :as board]))
 
-(def empty-marker "_")
+(def empty-space "_")
 
-(defn- populate-markers [players board]
-      (map #(get (get players % ) :marker empty-marker) board))
+;TODO name this something else, simplify
+(defn- populate-spaces [board]
+      (map #(if (nil? (board/bget % board)) % (name (board/bget % board))) (range 1 (inc (board/size board)))))
 
-(defn print-board [players board]
-  (loop [rows (partition 3 (populate-markers players board))]
+(defn print-board2 [board]
+  (loop [rows (partition 3 (populate-spaces board))]
     (when-let [row (first rows)] 
-      (println (reduce str "" (interpose "\t" row)))
+      (println (str "\t" (reduce str "" (interpose " | " row))))
       (recur (rest rows)))))
+
+(defn print-board [board]
+  (println)
+  (println (apply str "\t" (repeat 9 "-")))
+  (print-board2 board)
+  (println (apply str "\t" (repeat 9 "-")))
+  (println))
 
 (defn print-computer-move [move]
   (println (str "Computer chose space " move)))
@@ -20,7 +28,7 @@
   (println message))
 
 (defn declare-winner [marker]
-  (println (str "Player " marker " wins!")))
+  (println (str "Player " (name marker) " wins!")))
 
 (defn declare-draw []
   (println "Cats game"))
@@ -29,7 +37,7 @@
   (str/trim (read-line)))
 
 (defn prompt-for-move [marker board]
-  (println (str marker ": please enter move."))
+  (println (str (name marker) ", please enter move:"))
   (get-user-input))
 
 (defn show-marker-prompt [player-num]

@@ -14,19 +14,19 @@
               (should= [
                         :x :_ :_
                         :_ :_ :_
-                        :_ :_ :_ ] (apply-move 0 
+                        :_ :_ :_ ] (apply-move 1 
                                                [:_ :_ :_
                                                 :_ :_ :_
                                                 :_ :_ :_ ] :x))))
 
-(describe "empty-space?"
-          (it "returns false if cell is occupied"
-              (should= false (empty-space? 0 [:x :_ :_
-                                              :_ :_ :_
-                                              :_ :_ :_ ])))
-          (it "returns true if cell is not occupied"
-              (should= true (empty-space? 0 [:_ :_ :_
-                                             :_ :_ :_
-                                             :_ :_ :_ ]))))
+(describe "bget"
+          (it "returns marker if cell is occupied"
+              (should= :x (bget 1 [:x :_ :_
+                                   :_ :_ :_
+                                   :_ :_ :_ ])))
+          (it "returns nil if cell is empty"
+              (should= nil (bget 1 [:_ :_ :_
+                                    :_ :_ :_
+                                    :_ :_ :_ ]))))
 
 

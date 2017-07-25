@@ -4,6 +4,7 @@
             [tic-tac-toe.board :as board]))
 
 
+; TODO - change name of player arg...confusing
 (defn get-marker [player]
   (console/show-marker-prompt (if (= :primary player) 1 2))
   (let [marker (console/get-user-input)]
@@ -21,9 +22,10 @@
           (recur board marker player))
       (read-string move))))
 
+; TODO - should I put this into board?
 (defn- find-empty-space [board]
-  (let [move (rand-nth (range 0 (board/size board)))]
-   (if (board/empty-space? move board)
+  (let [move (rand-nth (range 1 (inc (board/size board))))]
+   (if (nil? (board/bget move board))
      move
      (recur board))))
 

@@ -8,18 +8,18 @@
   (some #(if (not= marker %) %) (keys players)))
 
 (defn- take-turn [board players marker]
-  (console/print-board players board)
-  (let [move (player/get-move board marker (get players marker))]
-    (board/apply-move move board current-marker)))
+  (console/print-board board)
+  (let [move (player/get-move board marker (marker players))]
+    (board/apply-move move board marker)))
 
-(defn- complete-game [players board]
+(defn- complete-game [board]
   (if-let [winner (decision/winner board)]
     (console/declare-winner winner)
     (console/declare-draw)))
 
 (defn run [{:keys [board current-marker players]}]
   (if (decision/over? board)
-      (complete-game players board)
+      (complete-game board)
       (recur {
               :board (take-turn board players current-marker)
               :current-marker (switch-player current-marker players)

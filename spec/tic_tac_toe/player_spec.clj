@@ -10,7 +10,7 @@
 
 (describe "get-move computer"
           (it "finds an empty space on the board"
-              (with-out-str (should= 3 (get-move [:x :o :x :_] "O" {:type :computer})))))
+              (with-out-str (should= 4 (get-move [:x :o :x :_] "O" {:type :computer})))))
 
 
 (describe "get-marker"

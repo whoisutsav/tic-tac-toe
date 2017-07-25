@@ -5,10 +5,10 @@
   (not (nil? (re-matches #"^\d+$" s))))
 
 (defn on-board? [board move]
-  (<= 0 move (dec (board/size board))))
+  (<= 1 move (board/size board)))
 
 (defn available? [board move]
-  (board/empty-space? move board))
+  (nil? (board/bget move board)))
 
 (defn single-letter? [s]
   (boolean (re-matches #"^[a-z|A-Z]{1}" s)))

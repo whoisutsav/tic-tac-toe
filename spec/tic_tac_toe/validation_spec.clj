@@ -7,12 +7,12 @@
           (it "returns error if move is not numeric"
               (should= "Move must be a number" (:error (move [] "5D"))))
           (it "returns error if move is not on board"
-              (should= "Move must be between 0 and size of board" (:error (move [:x :x :o :o] "4"))))
+              (should= "Move must be between 1 and size of board" (:error (move [:x :x :o :o] "0"))))
           (it "returns error if space is not available"
               (should= "Space is occupied" (:error (move [:x :x :o :o] "1")))
               )
           (it "returns no error if move is valid"
-              (should= nil (:error (move [:_ :_ :_ :_] "0")))))
+              (should= nil (:error (move [:_ :_ :_ :_] "1")))))
 
 
 (describe "marker"

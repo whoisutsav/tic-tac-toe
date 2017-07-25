@@ -6,16 +6,16 @@
 (describe "run"
           (it "plays until there is a winner"
               (should-contain "Player X wins" 
-                  (with-out-str (with-in-str "0\n1\n3\n4\n6" 
+                  (with-out-str (with-in-str "1\n2\n4\n5\n7" 
                      (run { 
                            :board (board/new-board)
-                           :players {"X" {:type :human} "O" {:type :human}}
-                           :current-marker "X"})))))
+                           :players {:X {:type :human} :O {:type :human}}
+                           :current-marker :X})))))
 
           (it "plays until no moves left"
              (should-contain "Cats game"
-               (with-out-str (with-in-str "0\n1\n2\n3\n4\n8\n5\n6\n7" 
+               (with-out-str (with-in-str "1\n2\n3\n4\n5\n9\n6\n7\n8" 
                   (run {
                         :board (board/new-board)
-                        :players {"X" {:type :human} "O" {:type :human}}
-                        :current-marker "X"}))))))
+                        :players {:X {:type :human} :O {:type :human}}
+                        :current-marker :X}))))))

@@ -4,11 +4,11 @@
 
 (describe "print-board"
           (it "draws board"
-              (should= "X\t_\t_\nO\t_\tX\n_\t_\t_\n" 
-                       (with-out-str (print-board {:x {:marker "X"} :o {:marker "O"}} 
+              (should-contain "X | 2 | 3\nO | 5 | X\n7 | 8 | 9\n" 
+                       (with-out-str (print-board  
                                            [
-                                            :x :_ :_ 
-                                            :o :_ :x
+                                            :X :_ :_ 
+                                            :O :_ :X
                                             :_ :_ :_ ])))))
 
 (describe "print-computer-move"
@@ -27,7 +27,7 @@
 
 (describe "prompt-for-move"
   (it "prints prompt"
-    (should-contain "X: please enter move" (with-out-str (with-in-str
+    (should-contain "X, please enter move:" (with-out-str (with-in-str
                    " 9\t" (prompt-for-move "X" []))))))
 
 

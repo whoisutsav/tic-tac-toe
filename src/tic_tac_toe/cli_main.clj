@@ -4,11 +4,11 @@
             [tic-tac-toe.cli-runner :as cli-runner]))
 
 (defn -main []
-  (let [current-marker (player/get-marker :primary) 
-        opponent-marker (player/get-marker :opponent)] 
+  (let [current-marker (keyword (player/get-marker :primary)) 
+        opponent-marker (keyword (player/get-marker :opponent))] 
     (cli-runner/run
       {:board (board/new-board)
        :players {current-marker {:type :human} opponent-marker {:type :computer}}
-       :current-player current-marker})))
+       :current-marker current-marker})))
 
 
