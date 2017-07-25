@@ -11,15 +11,18 @@
 (defn print-board2 [board]
   (loop [rows (partition 3 (populate-spaces board))]
     (when-let [row (first rows)] 
-      (println (str "\t" (reduce str "" (interpose " | " row))))
+      (println (str "\t| " (reduce str "" (interpose " | " row)) " |"))
       (recur (rest rows)))))
 
 (defn print-board [board]
   (println)
-  (println (apply str "\t" (repeat 9 "-")))
+  (println (apply str "\t" (repeat 13 "-")))
   (print-board2 board)
-  (println (apply str "\t" (repeat 9 "-")))
+  (println (apply str "\t" (repeat 13 "-")))
   (println))
+
+(defn print-turn-message [marker]
+  (println (str (name marker) "'s turn")))
 
 (defn print-computer-move [move]
   (println (str "Computer chose space " move)))
@@ -31,13 +34,13 @@
   (println (str "Player " (name marker) " wins!")))
 
 (defn declare-draw []
-  (println "Cats game"))
+  (println "Cats game."))
 
 (defn get-user-input []
   (str/trim (read-line)))
 
-(defn prompt-for-move [marker board]
-  (println (str (name marker) ", please enter move:"))
+(defn prompt-for-move []
+  (println (str "Please enter move:"))
   (get-user-input))
 
 (defn show-marker-prompt [player-num]

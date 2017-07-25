@@ -4,15 +4,20 @@
             [tic-tac-toe.board :as board]
             [tic-tac-toe.decision :as decision]))
 
-(defn- switch-player [marker players]
-  (some #(if (not= marker %) %) (keys players)))
+(defn- swap-marker [current-marker players]
+  (let [markers (keys players)]
+    (if (= (first markers) current-marker)
+      (second markers)
+      (first markers))))
 
 (defn- take-turn [board players marker]
   (console/print-board board)
-  (let [move (player/get-move board marker (marker players))]
-    (board/apply-move move board marker)))
+  (console/print-turn-message marker)
+  (let [move (player/get-move board (marker players))]
+    (board/apply-move board move marker)))
 
 (defn- complete-game [board]
+  (console/print-board board)
   (if-let [winner (decision/winner board)]
     (console/declare-winner winner)
     (console/declare-draw)))
@@ -22,7 +27,7 @@
       (complete-game board)
       (recur {
               :board (take-turn board players current-marker)
-              :current-marker (switch-player current-marker players)
+              :current-marker (swap-marker current-marker players)
               :players players})))
 
 

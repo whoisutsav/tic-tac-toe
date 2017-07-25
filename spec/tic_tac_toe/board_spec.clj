@@ -14,10 +14,9 @@
               (should= [
                         :x :_ :_
                         :_ :_ :_
-                        :_ :_ :_ ] (apply-move 1 
-                                               [:_ :_ :_
+                        :_ :_ :_ ] (apply-move [:_ :_ :_
                                                 :_ :_ :_
-                                                :_ :_ :_ ] :x))))
+                                                :_ :_ :_ ] 1 :x))))
 
 (describe "bget"
           (it "returns marker if cell is occupied"

@@ -4,22 +4,21 @@
             [tic-tac-toe.board :as board]))
 
 
-; TODO - change name of player arg...confusing
-(defn get-marker [player]
-  (console/show-marker-prompt (if (= :primary player) 1 2))
+(defn get-marker [order]
+  (console/show-marker-prompt (if (= :primary order) 1 2))
   (let [marker (console/get-user-input)]
     (if-let [error-str (:error (validation/marker marker))]
       (do (console/show-error error-str)
-          (recur player))
-      marker)))
+          (recur order))
+      (keyword marker))))
 
-(defmulti get-move (fn [board marker player] (:type player)))
+(defmulti get-move (fn [board player] (:type player)))
 
-(defmethod get-move :human [board marker player]
-  (let [move (console/prompt-for-move marker board)] 
+(defmethod get-move :human [board _]
+  (let [move (console/prompt-for-move)] 
     (if-let [error-str (:error (validation/move board move))] 
       (do (console/show-error error-str) 
-          (recur board marker player))
+          (recur board _))
       (read-string move))))
 
 ; TODO - should I put this into board?
@@ -29,7 +28,7 @@
      move
      (recur board))))
 
-(defmethod get-move :computer [board marker player]
+(defmethod get-move :computer [board _]
   (let [move (find-empty-space board)]
     (console/print-computer-move move)
     move))

@@ -4,12 +4,16 @@
 
 (describe "print-board"
           (it "draws board"
-              (should-contain "X | 2 | 3\nO | 5 | X\n7 | 8 | 9\n" 
+              (should-contain "| X | 2 | 3 |\n\t| O | 5 | X |\n\t| 7 | 8 | 9 |\n" 
                        (with-out-str (print-board  
                                            [
                                             :X :_ :_ 
                                             :O :_ :X
                                             :_ :_ :_ ])))))
+
+(describe "print-turn-message"
+          (it "prints message"
+              (should-contain "X's turn" (with-out-str (print-turn-message :X)))))
 
 (describe "print-computer-move"
           (it "prints message"
@@ -23,12 +27,12 @@
           (it "prints winning message to the console" (should= "Player X wins!\n" (with-out-str (declare-winner "X")))))
 
 (describe "declare-draw"
-          (it "prints draw message to the console", (should= "Cats game\n" (with-out-str (declare-draw)))))
+          (it "prints draw message to the console", (should= "Cats game.\n" (with-out-str (declare-draw)))))
 
 (describe "prompt-for-move"
   (it "prints prompt"
-    (should-contain "X, please enter move:" (with-out-str (with-in-str
-                   " 9\t" (prompt-for-move "X" []))))))
+    (should-contain "Please enter move:" (with-out-str (with-in-str
+                   " 9\t" (prompt-for-move))))))
 
 
 (describe "get-user-input"
