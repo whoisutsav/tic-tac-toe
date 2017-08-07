@@ -4,6 +4,14 @@
 
 (def empty-space "_")
 
+; TODO polish method 
+(defn print-game-menu [options]
+  (println "Please select the type of game:")
+  (loop [options options]
+    (when-let [option (first options)]
+      (println option)
+      (recur (rest options)))))
+
 (defn- populate-numbers [board]
       (map 
         #(if-let [marker (board/get-marker % board)] 
