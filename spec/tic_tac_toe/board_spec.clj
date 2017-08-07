@@ -34,4 +34,9 @@
                                           :_ :_ :_
                                           :_ :_ :_ ]))))
 
+(describe "get-empty-spaces"
+          (it "returns a vector of the empty cells"
+              (should= [1 3 4 5] (get-empty-spaces [:_ :X :_
+                                                :_ :_ :O
+                                                :X :O :X ]))))
 

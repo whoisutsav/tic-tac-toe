@@ -1,5 +1,5 @@
 (ns tic-tac-toe.human-player
-  (:require [tic-tac-toe.player :refer :all]
+  (:require [tic-tac-toe.player :refer :all] 
             [tic-tac-toe.console :as console]
             [tic-tac-toe.validation :as validation]))
 

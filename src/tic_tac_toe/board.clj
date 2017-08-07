@@ -16,3 +16,9 @@
     (if (= empty-space marker)
       nil
       marker)))
+
+(defn get-empty-spaces [board]
+  (->> (range 1 (inc (size board)))
+       (filter #(nil? (get-marker % board)))
+       (vec)))
+

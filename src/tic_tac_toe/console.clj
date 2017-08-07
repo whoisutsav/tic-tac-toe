@@ -49,7 +49,7 @@
   (println "Please enter move:"))
 
 (defn declare-winner [marker]
-  (println (str "Player " (name marker) " wins!")))
+  (println (str (name marker) " wins!")))
 
 (defn declare-draw []
   (println "Cats game."))

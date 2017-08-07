@@ -1,6 +1,7 @@
 (ns tic-tac-toe.cli-runner
   (:require [tic-tac-toe.console :as console]
             [tic-tac-toe.player :as player]
+            [tic-tac-toe.computer-player :refer :all] ;TODO how to include multimethod across namespaces 
             [tic-tac-toe.board :as board]
             [tic-tac-toe.decision :as decision]))
 
