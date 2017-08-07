@@ -1,6 +1,6 @@
 (ns tic-tac-toe.cli-menu
   (:require [tic-tac-toe.console :as console]
-            [tic-tac-toe.player :as player])) 
+            [tic-tac-toe.human-player :as player])) 
 
 (def human-vs-human "1. Human vs. Human")
 (def human-vs-computer "2. Human vs Computer")
