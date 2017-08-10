@@ -10,9 +10,10 @@
 (defmethod get-marker :human [player-type is-opponent]
   (console/print-marker-prompt is-opponent)
   (let [marker (console/get-user-input)]
-    (if (re-matches #"^[a-z|A-Z]{1}" marker)
+    (if-let [error-str (:error (validation/marker marker))] 
+      (do (console/print-error error-str) (recur player-type is-opponent))
       (keyword marker)
-      (do (println "Invalid marker: must be a single letter") (recur player-type is-opponent)))))
+      )))
 
 (defmethod get-marker :computer [_ _]
   (println "Computer chose marker O")
