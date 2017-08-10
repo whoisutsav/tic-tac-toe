@@ -2,10 +2,10 @@
   (:require [speclj.core :refer :all]
             [tic-tac-toe.console :refer :all]))
 
-(describe "print-game-menu"
-          (it "prints game menu"
+(describe "print-menu"
+          (it "prints menu"
               (should-contain "Please select the type of game:\n1. Human vs Human\n2. Human vs Computer"
-                              (with-out-str (print-game-menu ["1. Human vs Human" "2. Human vs Computer"])))))
+                              (with-out-str (print-menu ["1. Human vs Human" "2. Human vs Computer"])))))
 
 (describe "print-board"
           (it "draws board"
@@ -30,8 +30,8 @@
 
 (describe "print-marker-prompt"
   (it "prints message"
-    (should-contain "Player 1, please enter marker:" (with-out-str (with-in-str
-                   " 9\t" (print-marker-prompt 1))))))
+    (should-contain "Please enter player's marker:" (with-out-str (with-in-str
+                   " 9\t" (print-marker-prompt false))))))
 
 (describe "print-move-prompt"
   (it "prints message"

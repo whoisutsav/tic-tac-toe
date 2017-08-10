@@ -11,13 +11,3 @@
 
           (it "keeps getting user input until move is valid" (with-out-str (should= 2 (with-in-str "Z\n-1\n8\n0\n    2  \t " (get-move [:x :_ :_ :_] {:type :human}))))))
 
-
-;TODO move somewhere else
-(describe "get-marker"
-          (around [it] (with-out-str (it)))
-          (it "prompts the user"
-              (should-contain "Player 2, please enter marker:"
-                              (with-out-str (with-in-str "A\n"
-                                              (get-marker :opponent)))))
-          (it "gets the player's marker until it's valid"
-              (should= :Z (with-in-str "0\nBB\nZ\n" (get-marker 1)))))

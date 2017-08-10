@@ -4,7 +4,7 @@
             [tic-tac-toe.board :as board]))
 
 (describe "run"
-          (it "plays until there is a winner (vs. human)"
+          (it "plays vs. human until there is a winner"
               (should-contain "X wins" 
                   (with-out-str (with-in-str "1\n2\n4\n5\n7" 
                      (run { 
@@ -12,7 +12,7 @@
                            :current-player {:marker :X :type :human}
                            :opponent-player {:marker :O :type :human}})))))
 
-          (it "plays until no moves left (vs. human)"
+          (it "plays vs. human until no moves left"
              (should-contain "Cats game"
                (with-out-str (with-in-str "1\n2\n3\n4\n5\n9\n6\n7\n8" 
                   (run {
@@ -20,9 +20,9 @@
                         :current-player {:marker :X :type :human}
                         :opponent-player {:marker :O :type :human}})))))
 
-          (it "plays until game is over (vs. computer)"
+          (it "plays vs. computer until there is a winner/no moves left"
               (should  
-                (re-find #"wins|Bats game." (with-out-str (with-in-str "1\n2\n3\n4\n5\n6\n7\n8\n9" 
+                (re-find #"wins|Cats game" (with-out-str (with-in-str "1\n2\n3\n4\n5\n6\n7\n8\n9" 
                   (run {
                         :board (board/new-board)
                         :current-player {:marker :X :type :human}

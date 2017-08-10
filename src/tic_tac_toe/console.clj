@@ -5,7 +5,7 @@
 (def empty-space "_")
 
 ; TODO polish method 
-(defn print-game-menu [options]
+(defn print-menu [options]
   (println "Please select the type of game:")
   (loop [options options]
     (when-let [option (first options)]
@@ -42,8 +42,10 @@
 (defn print-error [message]
   (println message))
 
-(defn print-marker-prompt [player-num]
-  (println (str "Player " player-num ", please enter marker:")))
+(defn print-marker-prompt [is-opponent]
+  (if is-opponent
+    (println "Please enter opponent's marker:") 
+    (println "Please enter player's marker:")))
 
 (defn print-move-prompt []
   (println "Please enter move:"))
