@@ -9,7 +9,7 @@
 (defn- take-turn [board player]
   (console/print-board board)
   (let [marker (:marker player)] 
-    (console/print-turn-message marker)
+    (console/state-turn marker)
     (let [move (player/get-move board player)]
       (board/put-marker board move marker))))
 

@@ -33,7 +33,7 @@
   (print (format-board board))
   (println "\t-------------\n"))
 
-(defn print-turn-message [marker]
+(defn state-turn [marker]
   (println (str (name marker) "'s turn")))
 
 (defn print-computer-move [move]

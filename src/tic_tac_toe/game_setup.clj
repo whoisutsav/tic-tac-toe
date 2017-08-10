@@ -1,5 +1,6 @@
 (ns tic-tac-toe.game-setup
   (:require [tic-tac-toe.console :as console]
+            [tic-tac-toe.validation :as validation]
             [tic-tac-toe.board :as board])) 
 
 (def options [ "1. Human vs. Human"
@@ -12,11 +13,10 @@
   (let [marker (console/get-user-input)]
     (if-let [error-str (:error (validation/marker marker))] 
       (do (console/print-error error-str) (recur player-type is-opponent))
-      (keyword marker)
-      )))
+      (keyword marker))))
 
 (defmethod get-marker :computer [_ _]
-  (println "Computer chose marker O")
+  (println "Computer chose marker O") ; TOOD move this into console?
   :O)
 
 ; TODO rename new-game/initialize-game

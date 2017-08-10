@@ -16,9 +16,9 @@
                                             :O :_ :X
                                             :_ :_ :_ ])))))
 
-(describe "print-turn-message"
+(describe "state-turn"
           (it "prints message"
-              (should-contain "X's turn" (with-out-str (print-turn-message :X)))))
+              (should-contain "X's turn" (with-out-str (state-turn :X)))))
 
 (describe "print-computer-move"
           (it "prints message"
