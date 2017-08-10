@@ -1,7 +1,7 @@
-(ns tic-tac-toe.computer-player-spec
+(ns tic-tac-toe.player.console-computer-spec
   (:require [speclj.core :refer :all]
             [tic-tac-toe.player :refer :all]
-            [tic-tac-toe.computer-player :refer :all])) 
+            [tic-tac-toe.player.console-computer :refer :all])) 
 
 ;TODO is there a way to not require both player and computer-player?
 

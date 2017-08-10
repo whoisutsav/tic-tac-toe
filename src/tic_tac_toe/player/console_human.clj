@@ -1,6 +1,6 @@
-(ns tic-tac-toe.human-player
+(ns tic-tac-toe.player.console-human
   (:require [tic-tac-toe.player :refer :all] 
-            [tic-tac-toe.console :as console]
+            [tic-tac-toe.console-interface :as console]
             [tic-tac-toe.validation :as validation]))
 
 (defmethod get-move :human [board _]

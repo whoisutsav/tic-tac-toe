@@ -1,5 +1,5 @@
-(ns tic-tac-toe.game-setup
-  (:require [tic-tac-toe.console :as console]
+(ns tic-tac-toe.console-game-setup
+  (:require [tic-tac-toe.console-interface :as console]
             [tic-tac-toe.validation :as validation]
             [tic-tac-toe.board :as board])) 
 

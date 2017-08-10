@@ -1,7 +1,7 @@
-(ns tic-tac-toe.human-player-spec
+(ns tic-tac-toe.player.console-human-spec
   (:require [speclj.core :refer :all]
             [tic-tac-toe.player :refer :all]
-            [tic-tac-toe.human-player :refer :all]))
+            [tic-tac-toe.player.console-human :refer :all]))
 
 ; TODO is there a way not to require both player and human-player
 

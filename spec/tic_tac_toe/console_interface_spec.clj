@@ -1,6 +1,6 @@
-(ns tic-tac-toe.console-spec
+(ns tic-tac-toe.console-interface-spec
   (:require [speclj.core :refer :all]
-            [tic-tac-toe.console :refer :all]))
+            [tic-tac-toe.console-interface :refer :all]))
 
 (describe "print-menu"
           (it "prints menu"

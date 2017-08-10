@@ -1,6 +1,6 @@
-(ns tic-tac-toe.cli-runner-spec
+(ns tic-tac-toe.console-runner-spec
   (:require [speclj.core :refer :all]
-            [tic-tac-toe.cli-runner :refer :all]
+            [tic-tac-toe.console-runner :refer :all]
             [tic-tac-toe.board :as board]))
 
 (describe "run"
