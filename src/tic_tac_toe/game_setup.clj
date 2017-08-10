@@ -7,9 +7,12 @@
 
 (defmulti get-marker (fn [player-type is-opponent] player-type))
 
-(defmethod get-marker :human [_ is-opponent]
+(defmethod get-marker :human [player-type is-opponent]
   (console/print-marker-prompt is-opponent)
-  (keyword (read-line)))
+  (let [marker (console/get-user-input)]
+    (if (re-matches #"^[a-z|A-Z]{1}" marker)
+      (keyword marker)
+      (do (println "Invalid marker: must be a single letter") (recur player-type is-opponent)))))
 
 (defmethod get-marker :computer [_ _]
   (println "Computer chose marker O")
