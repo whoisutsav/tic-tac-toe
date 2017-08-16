@@ -49,7 +49,7 @@
         (do (console-ui/print-computer-move best-move) best-move)
         (let [move (first moves)
               new-board (board/put-marker board move marker)
-              max-loss (max-loss other-marker marker marker new-board)] 
-          (if (or (nil? min-max-loss) (< max-loss min-max-loss))
-            (recur (rest moves) max-loss move)
+              new-max-loss (max-loss other-marker marker marker new-board)] 
+          (if (or (nil? min-max-loss) (< new-max-loss min-max-loss))
+            (recur (rest moves) new-max-loss move)
             (recur (rest moves) min-max-loss best-move)))))))
