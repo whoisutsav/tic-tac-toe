@@ -5,7 +5,7 @@
 
 
 (describe "get-move"
-          (around [it] (with-out-str it))
+          (around [it] (with-out-str (it)))
               (it "returns move"
                 (should= 2 (with-in-str "2\n " 
                              (get-move [:x :_ :_
