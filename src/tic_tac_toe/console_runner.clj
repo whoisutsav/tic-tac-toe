@@ -1,23 +1,24 @@
 (ns tic-tac-toe.console-runner
-  (:require [tic-tac-toe.console-interface :as console]
+  (:require [tic-tac-toe.console-ui :as console-ui]
             [tic-tac-toe.player :as player]
-            [tic-tac-toe.player.console-human :refer :all]
-            [tic-tac-toe.player.console-computer :refer :all] ;TODO how to include multimethod across namespaces 
+            [tic-tac-toe.player.human]
+            [tic-tac-toe.player.computer]
+            [tic-tac-toe.player.hard-computer]
             [tic-tac-toe.board :as board]
             [tic-tac-toe.decision :as decision]))
 
 (defn- take-turn [board player]
-  (console/print-board board)
+  (console-ui/print-board board)
   (let [marker (:marker player)] 
-    (console/state-turn marker)
+    (console-ui/print-turn marker)
     (let [move (player/get-move board player)]
       (board/put-marker board move marker))))
 
 (defn- complete-game [board]
-  (console/print-board board)
+  (console-ui/print-board board)
   (if-let [winner (decision/winner board)]
-    (console/declare-winner winner)
-    (console/declare-draw)))
+    (console-ui/declare-winner winner)
+    (console-ui/declare-draw)))
 
 (defn run [{:keys [board current-player opponent-player]}]
   (if (decision/over? board)

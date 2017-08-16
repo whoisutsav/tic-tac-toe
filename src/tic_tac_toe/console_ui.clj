@@ -1,17 +1,22 @@
-(ns tic-tac-toe.console-interface 
+(ns tic-tac-toe.console-ui 
   (:require [clojure.string :as str]
             [tic-tac-toe.board :as board]))
 
-(def empty-space "_")
-
-; TODO polish method 
+;;;;;;;;;; Game Setup ;;;;;;;;;;
 (defn print-menu [options]
   (println "Please select the type of game:")
   (loop [options options]
-    (when-let [option (first options)]
+    (when-first [option options]
       (println option)
       (recur (rest options)))))
 
+(defn print-marker-prompt [is-opponent]
+  (if is-opponent
+    (println "Please enter opponent's marker:") 
+    (println "Please enter player's marker:")))
+
+
+;;;;;;;;;; Board ;;;;;;;;;;
 (defn- populate-numbers [board]
       (map 
         #(if-let [marker (board/get-marker % board)] 
@@ -33,28 +38,27 @@
   (print (format-board board))
   (println "\t-------------\n"))
 
-(defn state-turn [marker]
+;;;;;;;;;; Turn ;;;;;;;;;;
+(defn print-turn [marker]
   (println (str (name marker) "'s turn")))
 
 (defn print-computer-move [move]
   (println (str "Computer chose space " move)))
 
-(defn print-error [message]
-  (println message))
-
-(defn print-marker-prompt [is-opponent]
-  (if is-opponent
-    (println "Please enter opponent's marker:") 
-    (println "Please enter player's marker:")))
-
 (defn print-move-prompt []
   (println "Please enter move:"))
 
+
+;;;;;;;;;; Decision ;;;;;;;;;;
 (defn declare-winner [marker]
   (println (str (name marker) " wins!")))
 
 (defn declare-draw []
   (println "Cats game."))
+
+;;;;;;;;;; General ;;;;;;;;;;
+(defn print-message [message]
+  (println message))
 
 (defn get-user-input []
   (str/trim (read-line)))

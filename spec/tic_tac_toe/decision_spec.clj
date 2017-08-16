@@ -29,5 +29,4 @@
               (should= true (over? [:x :o :x
                                     :x :o :x
                                     :o :x :o ]))
-              )
-          )
+              ))

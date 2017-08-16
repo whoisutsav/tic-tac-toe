@@ -8,7 +8,7 @@
               (should-contain "X wins" 
                   (with-out-str (with-in-str "1\n2\n4\n5\n7" 
                      (run { 
-                           :board (board/new-board)
+                           :board (board/new-board) 
                            :current-player {:marker :X :type :human}
                            :opponent-player {:marker :O :type :human}})))))
 
@@ -16,7 +16,7 @@
              (should-contain "Cats game"
                (with-out-str (with-in-str "1\n2\n3\n4\n5\n9\n6\n7\n8" 
                   (run {
-                        :board (board/new-board)
+                        :board (board/new-board) 
                         :current-player {:marker :X :type :human}
                         :opponent-player {:marker :O :type :human}})))))
 

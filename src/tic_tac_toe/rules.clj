@@ -1,4 +1,4 @@
-(ns tic-tac-toe.validation-predicates
+(ns tic-tac-toe.rules
   (:require [tic-tac-toe.board :as board]))
 
 (defn numeric? [s]
