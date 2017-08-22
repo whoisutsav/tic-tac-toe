@@ -7,11 +7,11 @@
             [tic-tac-toe.board :as board]
             [tic-tac-toe.decision :as decision]))
 
-(defn- take-turn [board player]
+(defn- take-turn [board current-player opponent-player]
   (console-ui/print-board board)
-  (let [marker (:marker player)] 
+  (let [marker (:marker current-player)] 
     (console-ui/print-turn marker)
-    (let [move (player/get-move board player)]
+    (let [move (player/get-move board current-player opponent-player)]
       (board/put-marker board move marker))))
 
 (defn- complete-game [board]
@@ -23,7 +23,7 @@
 (defn run [{:keys [board current-player opponent-player]}]
   (if (decision/over? board)
       (complete-game board)
-      (let [updated-board (take-turn board current-player)]
+      (let [updated-board (take-turn board current-player opponent-player)]
         (recur {
               :board updated-board 
               :current-player opponent-player

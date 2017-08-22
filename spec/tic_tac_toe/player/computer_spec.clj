@@ -9,5 +9,5 @@
           (it "returns an empty space"
               (should= 4 (get-move [ :x :o :x
                                      :_ :o :x
-                                     :x :x :o ] {:type :computer}))))
+                                     :x :x :o ] {:type :computer} nil))))
 

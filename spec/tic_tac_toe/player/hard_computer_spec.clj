@@ -5,15 +5,14 @@
             [tic-tac-toe.decision :as decision]
             [tic-tac-toe.board :as board]))
 
-
 (defn can-i-win? [board my-marker computer-marker is-my-turn]
   (if (decision/over? board)
     (= my-marker (decision/winner board))
     (if is-my-turn
-      (->> (possible-boards my-marker board) 
+      (->> (possible-boards board my-marker) 
            (map #(can-i-win? % my-marker computer-marker false))
            (reduce #(or %1 %2)))
-      (let [computer-move (get-move board {:marker computer-marker :type :hard-computer})
+      (let [computer-move (get-move board {:marker computer-marker :type :hard-computer} {:marker my-marker})
             updated-board (board/put-marker board computer-move computer-marker)]
         (can-i-win? updated-board my-marker computer-marker true))))) 
 

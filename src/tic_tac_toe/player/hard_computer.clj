@@ -4,52 +4,49 @@
             [tic-tac-toe.board :as board]
             [tic-tac-toe.console-ui :as console-ui]))
 
-(defn leaf-node-value [board my-marker]
+(defn- leaf-node-value [board my-marker]
   (let [winner (decision/winner board)] 
       (cond 
         (nil? winner) 0
         (= winner my-marker) -1
         :else 1)))
 
-(defn possible-boards [marker board]
+(defn possible-boards [board marker]
   (->> (board/get-empty-spaces board)
        (map #(board/put-marker board % marker)))) 
 
-; Is there a better way to get this? Should we pass in opponent-marker?
-(defn other-marker [board marker]
-  (->> (range 1 (inc (board/size board)))
-       (map #(board/get-marker % board)) 
-       (filter (comp not nil?))
-       (filter #(not= marker %))
-       (first)))
+(defn- current-marker [my-marker opponent-marker depth]
+  (if (even? depth)
+    my-marker
+    opponent-marker))
 
-(defn evaluation-fn [current-marker my-marker]
-  (if (= current-marker my-marker)
+(defn- evaluation-fn [depth]
+  (if (even? depth)
     min
     max))
 
-(defn max-loss [current-marker next-marker my-marker board]
+(defn max-loss [my-marker opponent-marker depth board]
   (if (decision/over? board)
     (leaf-node-value board my-marker)
-    (let [evaluation-fn (evaluation-fn current-marker my-marker)
-          max-loss-partial (partial max-loss next-marker current-marker my-marker)] 
-      (->> (possible-boards current-marker board)
-           (map max-loss-partial)
+    (let [max-loss (partial max-loss my-marker opponent-marker (inc depth))] 
+      (->> (current-marker my-marker opponent-marker depth)
+           (possible-boards board)
+           (map max-loss)
            (flatten)
-           (apply evaluation-fn)))))
+           (apply (evaluation-fn depth))))))
 
-; TODO try more declarative solution - use reduce
-(defmethod get-move :hard-computer [board player]
-  (let [marker (:marker player)
-        other-marker (other-marker board marker)] 
-    (loop [moves (board/get-empty-spaces board)
-           min-max-loss nil
-           best-move nil]
-      (if (empty? moves)
-        (do (console-ui/print-computer-move best-move) best-move)
-        (let [move (first moves)
-              new-board (board/put-marker board move marker)
-              new-max-loss (max-loss other-marker marker marker new-board)] 
-          (if (or (nil? min-max-loss) (< new-max-loss min-max-loss))
-            (recur (rest moves) new-max-loss move)
-            (recur (rest moves) min-max-loss best-move)))))))
+
+(defn minimax-move [board my-marker opponent-marker]
+  (let [max-loss (partial max-loss my-marker opponent-marker 1)] 
+    (->> (board/get-empty-spaces board)
+         (map #(hash-map :move % :board (board/put-marker board % my-marker)))
+         (map #(assoc % :max-loss-value (max-loss (:board %))))
+         (apply min-key :max-loss-value)
+         (:move))))
+
+
+(defmethod get-move :hard-computer [board player opponent]
+  (let [my-marker (:marker player)
+        opponent-marker (:marker opponent)
+        move (minimax-move board my-marker opponent-marker)]
+    (do (console-ui/print-computer-move move) move)))

@@ -10,11 +10,11 @@
                 (should= 2 (with-in-str "2\n " 
                              (get-move [:x :_ :_
                                         :_ :_ :_
-                                        :_ :_ :_ ] {:type :human}))))
+                                        :_ :_ :_ ] {:type :human} nil))))
 
             (it "disregards bad input" 
                 (should= 2 (with-in-str "Z\n-1\nSEVEN\n0\n    2  \t " 
                              (get-move [:x :_ :_
                                         :_ :_ :_
-                                        :_ :_ :_ ] {:type :human})))))
+                                        :_ :_ :_ ] {:type :human} nil)))))
 
