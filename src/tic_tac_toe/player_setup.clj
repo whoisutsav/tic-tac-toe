@@ -24,7 +24,7 @@
 
 (defmethod get-marker :default [_ taken-marker]
   (let [marker (default-marker taken-marker)]
-    (console-ui/print-computer-marker (name marker))
+    (console-ui/print-computer-marker marker)
     marker))
 
 (defn- create-player 

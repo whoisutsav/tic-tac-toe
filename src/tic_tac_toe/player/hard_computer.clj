@@ -37,7 +37,8 @@
 
 
 (defn minimax-move [board my-marker opponent-marker]
-  (let [max-loss (partial max-loss my-marker opponent-marker 1)] 
+  (let [initial-depth 1
+        max-loss (partial max-loss my-marker opponent-marker initial-depth)] 
     (->> (board/get-empty-spaces board)
          (map #(hash-map :move % :board (board/put-marker board % my-marker)))
          (map #(assoc % :max-loss-value (max-loss (:board %))))
@@ -47,6 +48,5 @@
 
 (defmethod get-move :hard-computer [board player opponent]
   (let [my-marker (:marker player)
-        opponent-marker (:marker opponent)
-        move (minimax-move board my-marker opponent-marker)]
-    (do (console-ui/print-computer-move move) move)))
+        opponent-marker (:marker opponent)]
+    (minimax-move board my-marker opponent-marker)))

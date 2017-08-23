@@ -37,9 +37,9 @@
           (it "prints message"
               (should-contain "X's turn" (with-out-str (print-turn :X)))))
 
-  (describe "print-computer-move"
+  (describe "print-move"
           (it "prints message"
-              (should-contain "Computer chose space 5" (with-out-str (print-computer-move 5))))))
+              (should-contain "X moves to 5" (with-out-str (print-move :X 5))))))
 
 
 

@@ -16,6 +16,8 @@
 
 (describe "marker"
           (it "validates marker is a single letter"
-              (should= {:error "Marker must be a single letter"} (marker "BB")))
+              (should= {:error "Marker must be a single letter"} (marker "BB" nil)))
+          (it "validates marker is not taken"
+              (should= {:error "Marker taken. Please choose a different marker"} (marker "B" "B")))
           (it "returns empty error hash if marker is valid"
-              (should= {:error nil} (marker "S"))))
+              (should= {:error nil} (marker "S" nil))))

@@ -4,6 +4,4 @@
             [tic-tac-toe.console-ui :as console-ui]))
 
 (defmethod get-move :computer [board _ _]
-  (let [move (rand-nth (board/get-empty-spaces board))]
-    (console-ui/print-computer-move move)
-    move))
+  (rand-nth (board/get-empty-spaces board)))

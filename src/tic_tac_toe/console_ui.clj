@@ -16,7 +16,7 @@
     (println "Please enter player's marker:")))
 
 (defn print-computer-marker [computer-marker]
-  (println (str "Computer chose marker " computer-marker)))
+  (println (str "Computer chose marker " (name computer-marker))))
 
 
 ;;;;;;;;;; Board ;;;;;;;;;;
@@ -45,8 +45,8 @@
 (defn print-turn [marker]
   (println (str (name marker) "'s turn")))
 
-(defn print-computer-move [move]
-  (println (str "Computer chose space " move)))
+(defn print-move [marker move]
+  (println (str (name marker) " moves to " move)))
 
 (defn print-move-prompt []
   (println "Please enter move:"))

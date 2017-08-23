@@ -7,11 +7,13 @@
             [tic-tac-toe.board :as board]
             [tic-tac-toe.decision :as decision]))
 
+;TODO remove nested lets
 (defn- take-turn [board current-player opponent-player]
   (console-ui/print-board board)
   (let [marker (:marker current-player)] 
     (console-ui/print-turn marker)
     (let [move (player/get-move board current-player opponent-player)]
+      (console-ui/print-move marker move)
       (board/put-marker board move marker))))
 
 (defn- complete-game [board]
