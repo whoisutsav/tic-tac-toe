@@ -13,3 +13,5 @@
 (defn available? [board move]
   (nil? (board/get-marker move board)))
 
+(defn marker-available? [marker taken-marker]
+  (not= marker taken-marker))

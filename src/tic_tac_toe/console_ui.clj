@@ -15,6 +15,9 @@
     (println "Please enter opponent's marker:") 
     (println "Please enter player's marker:")))
 
+(defn print-computer-marker [computer-marker]
+  (println (str "Computer chose marker " computer-marker)))
+
 
 ;;;;;;;;;; Board ;;;;;;;;;;
 (defn- populate-numbers [board]
