@@ -4,29 +4,23 @@
 
 (def default-computer-markers [:O :X])
 
-;TODO get rid of
-(declare human-marker-loop)
+(defmulti get-marker (fn [player-type taken-marker] player-type))
 
-(defn- invalid-marker [error-str taken-marker]
+(defn- invalid-human-marker [error-str taken-marker]
   (console-ui/print-message error-str)
-  (human-marker-loop taken-marker))
-
-(defn- human-marker-loop [taken-marker]
-  (let [marker (console-ui/get-user-input)]
-    (if-let [error-str (:error (validation/marker marker taken-marker))] 
-      (invalid-marker error-str taken-marker) 
-      (keyword marker))))
+  (get-marker :human taken-marker))
 
 (defn- default-marker [taken-marker]
   (if (= taken-marker (first default-computer-markers))
     (second default-computer-markers)
     (first default-computer-markers)))
 
-(defmulti get-marker (fn [player-type taken-marker] player-type))
-
 (defmethod get-marker :human [player-type taken-marker]
   (console-ui/print-marker-prompt taken-marker)
-  (human-marker-loop taken-marker))
+  (let [marker (console-ui/get-user-input)]
+    (if-let [error-str (:error (validation/marker marker taken-marker))] 
+      (invalid-human-marker error-str taken-marker) 
+      (keyword marker))))
 
 (defmethod get-marker :default [_ taken-marker]
   (let [marker (default-marker taken-marker)]

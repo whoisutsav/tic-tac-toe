@@ -5,28 +5,24 @@
 
 
 ;TODO remove hard-coded choices 
-(defn game-type [options]
+(defn get-game-type [options]
   (console-ui/print-menu options)
   (let [choice (read-string (console-ui/get-user-input))] 
     (case choice 
       1 :human-vs-human
       2 :human-vs-computer 
       3 :human-vs-hard-computer 
-      :else (do (console-ui/print-message "Bad Option") (recur options)))))
+      (do (console-ui/print-message "Bad Option") (recur options)))))
 
 (defn- construct-game [board players]
   (let [[current-player opponent-player] players] 
-    {
-     :board board 
+    {:board board 
      :current-player current-player 
      :opponent-player opponent-player}))
 
 (defn new-game [configuration]
-  (let [{:keys [board options]} configuration]
-    (->> (game-type options)
-        (player-setup/initialize-players)
-        (construct-game board))))
-
-
-
+  (let [{:keys [board options]} configuration
+        game-type (get-game-type options)]
+    (->> (player-setup/initialize-players game-type)
+         (construct-game board))))
 
