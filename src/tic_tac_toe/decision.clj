@@ -1,13 +1,6 @@
 (ns tic-tac-toe.decision
   (:require [tic-tac-toe.board :as board]))
 
-;(def win-lines [[1 2 3] [4 5 6] [7 8 9]
-;                [1 4 7] [2 5 8] [3 6 9]
-;                [1 5 9] [3 5 7]])
-
-; [1 5 9] [1 6 11 16]
-; [3 5 7] [4 7 10 13]
-
 (defn diagonal [axis-size]
   (range 1 (inc (* axis-size axis-size)) (inc axis-size)))
 
@@ -31,8 +24,7 @@
 (def win-lines-memo (memoize win-lines))
 
 (defn- no-more-moves? [board]
-  (not-any? #(nil? (board/get-marker % board)) 
-          (range 1 (inc (board/size board))))) 
+  (empty? (board/get-empty-spaces board))) 
 
 (defn winner [board]
   (loop [lines (win-lines-memo (board/size board))]
@@ -44,5 +36,5 @@
         (recur (rest lines)))))))
 
 (defn over? [board]
-  (or (not= (winner board) nil)
+  (or (not= nil (winner board))
       (no-more-moves? board)))

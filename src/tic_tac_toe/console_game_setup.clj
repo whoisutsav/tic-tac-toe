@@ -21,6 +21,7 @@
      :current-player current-player 
      :opponent-player opponent-player}))
 
+;TODO move high-level player initialization logic into console-game-setup, so level of abstraction is consistent
 (defn new-game [configuration]
   (let [{:keys [board-size options]} configuration
         game-type (get-game-type options)]
