@@ -13,20 +13,6 @@
             (should-contain "Please enter player's marker:" (with-out-str (with-in-str
                    " 9\t" (print-marker-prompt false)))))))
 
-
-
-(describe "Board"
-   (describe "print-board"
-          (it "prints board"
-              (should-contain "| X | 2 | 3 |\n\t| O | 5 | X |\n\t| 7 | 8 | 9 |\n" 
-                       (with-out-str (print-board  
-                                           [
-                                            :X :_ :_ 
-                                            :O :_ :X
-                                            :_ :_ :_ ]))))))
-
-
-
 (describe "Turn"
   (describe "print-move-prompt"
         (it "prints message"

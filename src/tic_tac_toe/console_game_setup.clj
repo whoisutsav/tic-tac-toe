@@ -14,15 +14,16 @@
       3 :human-vs-hard-computer 
       (do (console-ui/print-message "Bad Option") (recur options)))))
 
-(defn- construct-game [board players]
-  (let [[current-player opponent-player] players] 
+(defn- construct-game [board-size players]
+  (let [[current-player opponent-player] players
+        board (board/new-board board-size)] 
     {:board board 
      :current-player current-player 
      :opponent-player opponent-player}))
 
 (defn new-game [configuration]
-  (let [{:keys [board options]} configuration
+  (let [{:keys [board-size options]} configuration
         game-type (get-game-type options)]
     (->> (player-setup/initialize-players game-type)
-         (construct-game board))))
+         (construct-game board-size))))
 

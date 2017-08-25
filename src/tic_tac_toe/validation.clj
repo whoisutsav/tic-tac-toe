@@ -5,7 +5,7 @@
 (defn move [board move]
   (cond
     (not (rules/numeric? move)) {:error "Move must be a number"}
-    (not (rules/on-board? board (read-string move))) {:error "Move must be between 1 and 9"}
+    (not (rules/on-board? board (read-string move))) {:error "Move must be on board"}
     (not (rules/available? board (read-string move))) {:error "Space is occupied"}
     :else {:error nil})) 
 

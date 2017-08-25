@@ -8,41 +8,41 @@
   (let [winner (decision/winner board)] 
       (cond 
         (nil? winner) 0
-        (= winner my-marker) -1
-        :else 1)))
+        (= winner my-marker) 1
+        :else -1)))
 
 (defn possible-boards [board marker]
   (->> (board/get-empty-spaces board)
        (map #(board/put-marker board % marker)))) 
 
-(defn- current-marker [my-marker opponent-marker depth]
+(defn- active-marker [my-marker opponent-marker depth]
   (if (even? depth)
     my-marker
     opponent-marker))
 
 (defn- evaluation-fn [depth]
   (if (even? depth)
-    min
-    max))
+    max
+    min))
 
-(defn max-loss [my-marker opponent-marker depth board]
+(defn score [my-marker opponent-marker depth board]
   (if (decision/over? board)
     (leaf-node-value board my-marker)
-    (let [max-loss (partial max-loss my-marker opponent-marker (inc depth))] 
-      (->> (current-marker my-marker opponent-marker depth)
+    (let [score (partial score my-marker opponent-marker (inc depth))] 
+      (->> (active-marker my-marker opponent-marker depth)
            (possible-boards board)
-           (map max-loss)
+           (map score)
            (flatten)
            (apply (evaluation-fn depth))))))
 
 
 (defn minimax-move [board my-marker opponent-marker]
   (let [initial-depth 1
-        max-loss (partial max-loss my-marker opponent-marker initial-depth)] 
+        score (partial score my-marker opponent-marker initial-depth)] 
     (->> (board/get-empty-spaces board)
          (map #(hash-map :move % :board (board/put-marker board % my-marker)))
-         (map #(assoc % :max-loss-value (max-loss (:board %))))
-         (apply min-key :max-loss-value)
+         (map #(assoc % :score-value (score (:board %))))
+         (apply max-key :score-value)
          (:move))))
 
 

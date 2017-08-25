@@ -4,7 +4,7 @@
             [tic-tac-toe.console-runner :as console-runner]))
 
 (def configuration {
-                    :board (board/new-board)
+                    :board-size 4
                     :options [ "1. Human vs. Human" 
                                "2. Human vs. Computer"
                                "3. Human vs. Hard Computer" ]})

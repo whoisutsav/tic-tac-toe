@@ -20,26 +20,35 @@
 
 
 ;;;;;;;;;; Board ;;;;;;;;;;
+(defn pad [s] 
+  (if (< (count s) 2)
+    (str " " s)
+    s))
+
 (defn- populate-numbers [board]
       (map 
         #(if-let [marker (board/get-marker % board)] 
-           (name marker)
-           %) 
+           (pad (name marker))
+           (pad (str %))) 
         (range 1 (inc (board/size board)))))
 
 (defn- format-row [row]
-  (str "\t| " (reduce str "" (interpose " | " row)) " |\n")) 
+  (str "\t\t| " (reduce str "" (interpose " | " row)) " |\n")) 
 
 (defn format-board [board]
   (->> (populate-numbers board)
-       (partition 3)
+       (partition (int (Math/sqrt (board/size board))))
        (map format-row)
        (reduce str)))
 
+(defn format-break [board]
+  (str "\t" (apply str (repeat 30 "-"))))
+
+
 (defn print-board [board]
-  (println "\n\t-------------")
+  (println)
   (print (format-board board))
-  (println "\t-------------\n"))
+  (println))
 
 ;;;;;;;;;; Turn ;;;;;;;;;;
 (defn print-turn [marker]

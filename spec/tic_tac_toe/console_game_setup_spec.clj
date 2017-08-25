@@ -6,7 +6,7 @@
                    :_ :_ :_
                    :_ :_ :_ ])
 
-(def configuration {:board empty-board
+(def configuration {:board-size 3 
 
                    :options ["1. Human vs. Human"
                              "2. Human vs. Computer"]})
