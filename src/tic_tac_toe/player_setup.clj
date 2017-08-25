@@ -2,6 +2,7 @@
   (:require [tic-tac-toe.console-ui :as console-ui]
             [tic-tac-toe.validation :as validation]))
 
+;TODO clean up
 (def default-computer-markers [:O :X])
 
 (defmulti get-marker (fn [player-type taken-marker] player-type))
