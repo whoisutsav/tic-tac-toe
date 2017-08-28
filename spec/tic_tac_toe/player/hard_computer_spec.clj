@@ -35,7 +35,7 @@
 ;          (it "chooses the best space"
 ;              (should= 9 (get-move [ :_ :x :_
 ;                                     :o :o :x
-;                                     :x :x :_ ] {:marker :o :type :hard-computer}))))
+;                                     :x :x :_ ] {:marker :o :type :hard-computer} {:marker :x :type :human}))))
 ;
 ;
 ;(describe "hard-computer"
