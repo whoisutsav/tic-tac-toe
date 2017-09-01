@@ -26,18 +26,19 @@
     s))
 
 (defn- populate-numbers [board]
-      (map 
-        #(if-let [marker (board/get-marker % board)] 
-           (pad (name marker))
-           (pad (str %))) 
-        (range 1 (inc (board/size board)))))
+      (let [board-size (board/size board)] 
+        (map 
+          #(if-let [marker (board/get-marker % board)] 
+             (pad (name marker))
+             (pad (str %))) 
+          (range 1 (inc (* board-size board-size))))))
 
 (defn- format-row [row]
   (str "\t\t| " (reduce str "" (interpose " | " row)) " |\n")) 
 
 (defn format-board [board]
   (->> (populate-numbers board)
-       (partition (int (Math/sqrt (board/size board))))
+       (partition (board/size board))
        (map format-row)
        (reduce str)))
 
@@ -51,7 +52,7 @@
   (println))
 
 ;;;;;;;;;; Turn ;;;;;;;;;;
-(defn print-turn [marker]
+(defn print-turn-prompt [marker]
   (println (str (name marker) "'s turn")))
 
 (defn print-move [marker move]

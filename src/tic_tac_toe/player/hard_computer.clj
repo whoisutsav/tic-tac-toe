@@ -4,7 +4,7 @@
             [tic-tac-toe.board :as board]
             [tic-tac-toe.console-ui :as console-ui]))
 
-(def max-depth 8)
+(def max-depth 6)
 
 (defn- leaf-node-value [board my-marker]
   (let [winner (decision/winner board)] 
@@ -55,17 +55,17 @@
   (loop [candidates (->> (board/get-empty-spaces board)
                          (map #(hash-map :move % :board (board/put-marker board my-marker %))))
          alpha Float/NEGATIVE_INFINITY 
-         best-candidate nil]
+         best-candidate {:move nil :board nil :score Float/NEGATIVE_INFINITY}]
     (if (empty? candidates)
       (:move best-candidate)
       (let [initial-depth 1
-          candidate (first candidates)
-          v (score my-marker opponent-marker alpha Float/POSITIVE_INFINITY initial-depth (:board candidate))
-          alpha (max alpha v)]
+            candidate (first candidates)
+            v (score my-marker opponent-marker alpha Float/POSITIVE_INFINITY initial-depth (:board candidate))
+            new-alpha (max alpha v)]
         (cond 
           (= 1 v) (:move candidate)
-          (or (nil? best-candidate) (> v (:score best-candidate))) (recur (rest candidates) alpha (assoc candidate :score v))
-          :else (recur (rest candidates) alpha best-candidate))))))
+          (> v (:score best-candidate)) (recur (rest candidates) new-alpha (assoc candidate :score v))
+          :else (recur (rest candidates) new-alpha best-candidate))))))
 
 
 (defmethod get-move :hard-computer [board player opponent]

@@ -3,22 +3,25 @@
 (def empty-space :_)
 
 (defn size [board]
-  (count board))
+  (case (count board)
+    9 3
+    16 4))
 
-(defn new-board [axis-size] 
-  (vec (repeat (* axis-size axis-size) empty-space)))
+(defn new-board [size] 
+  (vec (repeat (* size size) empty-space)))
 
-(defn put-marker [board marker cell]
-  (assoc board (dec cell) marker))
+(defn put-marker [board marker space]
+  (assoc board (dec space) marker))
 
-(defn get-marker [cell board]
-  (let [marker (nth board (dec cell))]
+(defn get-marker [space board]
+  (let [marker (nth board (dec space))]
     (if (= empty-space marker)
       nil
       marker)))
 
 (defn get-empty-spaces [board]
-  (->> (range 1 (inc (size board)))
-       (filter #(nil? (get-marker % board)))
-       (vec)))
+  (let [board-size (size board)] 
+    (->> (range 1 (inc (* board-size board-size)))
+         (filter #(nil? (get-marker % board)))
+         (vec))))
 

@@ -21,7 +21,7 @@
 
   (describe "print-turn"
           (it "prints message"
-              (should-contain "X's turn" (with-out-str (print-turn :X)))))
+              (should-contain "X's turn" (with-out-str (print-turn-prompt :X)))))
 
   (describe "print-move"
           (it "prints message"

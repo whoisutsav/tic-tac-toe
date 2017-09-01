@@ -7,11 +7,17 @@
           (it "validates move is numeric"
               (should= {:error "Move must be a number"} (move [] "5D")))
           (it "validates move is on board"
-              (should= {:error "Move must be on board"} (move [:x :x :o :o] "0")))
+              (should= {:error "Move must be on board"} (move [:_ :_ :_ 
+                                                               :_ :_ :_
+                                                               :_ :_ :_] "0")))
           (it "validates space is available"
-              (should= {:error "Space is occupied"} (move [:x :x :o :o] "1")))
+              (should= {:error "Space is occupied"} (move [:x :_ :_ 
+                                                           :_ :_ :_
+                                                           :_ :_ :_] "1")))
           (it "returns empty error hash if move is valid"
-              (should= {:error nil} (move [:_ :_ :_ :_] "1"))))
+              (should= {:error nil} (move [:_ :_ :_ 
+                                           :_ :_ :_
+                                           :_ :_ :_] "1"))))
 
 
 (describe "marker"

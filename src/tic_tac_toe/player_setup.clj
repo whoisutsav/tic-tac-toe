@@ -4,15 +4,22 @@
 
 (def default-markers [:O :X])
 
+(defn- invalid-marker [error-str]
+  (console-ui/print-message error-str)
+  (console-ui/get-user-input))
+
+(defn- human-marker-loop [taken-marker]
+  (loop [marker (console-ui/get-user-input)]
+    (let [error-str (:error (validation/marker marker taken-marker))]
+      (if (nil? error-str)
+        (keyword marker)
+        (recur (invalid-marker error-str))))))
+
 (defmulti get-marker (fn [player-type taken-marker] player-type))
 
-(defmethod get-marker :human [player-type taken-marker]
+(defmethod get-marker :human [_ taken-marker]
   (console-ui/print-marker-prompt taken-marker)
-  (let [marker (console-ui/get-user-input)
-        error-str (:error (validation/marker marker taken-marker))]
-    (if (nil? error-str) 
-      (keyword marker)
-      (do (console-ui/print-message error-str) (recur player-type taken-marker)))))
+  (human-marker-loop taken-marker))
 
 (defmethod get-marker :default [_ taken-marker]
   (let [marker (-> (remove #(= taken-marker %) default-markers)

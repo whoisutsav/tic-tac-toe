@@ -7,12 +7,12 @@
 
 (declare can-i-win?)
 
-(defn evaluate-my-moves [board my-marker computer-marker]
+(defn can-i-win-my-move? [board my-marker computer-marker]
   (->> (possible-boards board my-marker) 
            (map #(can-i-win? % my-marker computer-marker false))
            (reduce #(or %1 %2))))
 
-(defn evaluate-computer-move [board my-marker computer-marker]
+(defn can-i-win-computer-move? [board my-marker computer-marker]
   (let [computer-move (get-move board {:marker computer-marker :type :hard-computer} {:marker my-marker})
        updated-board (board/put-marker board computer-marker computer-move)]
     (can-i-win? updated-board my-marker computer-marker true)))
@@ -22,8 +22,8 @@
   (if (decision/over? board)
     (= my-marker (decision/winner board))
     (if is-my-turn
-      (evaluate-my-moves board my-marker computer-marker)      
-      (evaluate-computer-move board my-marker computer-marker)))) 
+      (can-i-win-my-move? board my-marker computer-marker)      
+      (can-i-win-computer-move? board my-marker computer-marker)))) 
 
 (describe "hard-computer"
           (around [it] (with-out-str (it)))
@@ -31,28 +31,8 @@
               (should= false (can-i-win? (board/new-board 3) :X :O true))))
 
 
-;(describe "hard-computer"
-;          (it "chooses the best space"
-;              (should= 9 (get-move [ :_ :x :_
-;                                     :o :o :x
-;                                     :x :x :_ ] {:marker :o :type :hard-computer} {:marker :x :type :human}))))
-;
-;
-;(describe "hard-computer"
-;          (it "calculates max loss"
-;              (should= 0 (max-loss :o :x :o [ :_ :x :_
-;                                              :o :o :x
-;                                              :x :x :_ ])))) 
-;
-;
-;(describe "hard-computer"
-;          (it "calculates max loss"
-;              (should= 0 (max-loss :x :o :x [ :_ :x :_
-;                                              :x :x :o
-;                                              :o :o :_ ]))))
-;
-;(describe "other-marker"
-;          (it "gets other marker"
-;              (should= :x (get-other-marker [ :_ :x :_
-;                                              :o :o :x
-;                                              :x :x :_ ] :o))))
+(describe "hard-computer"
+          (it "chooses the best space"
+              (should= 9 (get-move [ :_ :x :_
+                                     :o :o :x
+                                     :x :x :_ ] {:marker :o :type :hard-computer} {:marker :x :type :human}))))

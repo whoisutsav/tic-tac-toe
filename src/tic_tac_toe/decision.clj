@@ -1,40 +1,35 @@
 (ns tic-tac-toe.decision
   (:require [tic-tac-toe.board :as board]))
 
-(defn rows [axis-size]
-  (->> (range 1 (inc (* axis-size axis-size)))
-       (partition axis-size)))
+(defn rows [size]
+  (->> (range 1 (inc (* size size)))
+       (partition size)))
 
-(defn columns [axis-size]
-  (apply map vector (rows axis-size)))
+(defn columns [size]
+  (apply map vector (rows size)))
 
-(defn diagonal [axis-size]
-  (range 1 (inc (* axis-size axis-size)) (inc axis-size)))
+(defn diagonal [size]
+  (range 1 (inc (* size size)) (inc size)))
 
-(defn reverse-diagonal [axis-size]
-  (range axis-size (* axis-size axis-size) (dec axis-size)))
+(defn reverse-diagonal [size]
+  (range size (* size size) (dec size)))
 
-(defn win-lines [size]
-  (let [axis-size (int (Math/sqrt size))]
-    (-> (rows axis-size)
-        (into (columns axis-size))
-        (conj (diagonal axis-size))
-        (conj (reverse-diagonal axis-size)))))
-
-(def win-lines-memo (memoize win-lines))
+(defn win-lines [board]
+  (let [size (board/size board)]
+   (map (fn [line] (map (fn [space] (board/get-marker space board)) line))
+       (-> (rows size)
+           (into (columns size))
+           (conj (diagonal size))
+           (conj (reverse-diagonal size))))))
 
 (defn winner [board]
-  (loop [lines (win-lines-memo (board/size board))]
-    (when-first [line lines]
-      (let [marks (map #(board/get-marker % board) line)
-            first-mark (first marks)] 
-        (if (and (not= nil first-mark) (every? #(= first-mark %) marks))
-        first-mark 
-        (recur (rest lines)))))))
+  (loop [lines (win-lines board)]
+    (if (empty? lines)
+      nil
+      (or (reduce #(if (= %1 %2) %1) (first lines)) (recur (rest lines))))))
 
 (defn- no-more-moves? [board]
   (empty? (board/get-empty-spaces board))) 
 
 (defn over? [board]
-  (or (not= nil (winner board))
-      (no-more-moves? board)))
+  (or (not= (winner board) nil) (no-more-moves? board)))
