@@ -11,13 +11,13 @@
 
 (describe "on-board?"
           (it "returns true if move is on board"
-              (should= true (on-board? (board/new-board) 2)))
+              (should= true (on-board? (board/new-board 3) 2)))
           (it "returns false otherwise"
-              (should= false (on-board? (board/new-board) 99))))
+              (should= false (on-board? (board/new-board 3) 99))))
 
 (describe "available?"
           (it "returns true if space is empty"
-              (should= true (available? (board/new-board) 3)))
+              (should= true (available? (board/new-board 3) 3)))
           (it "returns false otherwise"
               (should= false (available? [:x :x :x :x] 2))))
 

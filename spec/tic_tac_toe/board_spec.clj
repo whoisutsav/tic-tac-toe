@@ -13,7 +13,7 @@
               (should= [
                         :_ :_ :_
                         :_ :_ :_
-                        :_ :_ :_ ] (new-board))))
+                        :_ :_ :_ ] (new-board 3))))
 
 (describe "put-marker"
           (it "returns a board with move applied"
@@ -22,7 +22,7 @@
                         :_ :_ :_
                         :_ :_ :_ ] (put-marker [:_ :_ :_
                                                 :_ :_ :_
-                                                :_ :_ :_ ] 1 :x))))
+                                                :_ :_ :_ ] :x 1))))
 
 (describe "get-marker"
           (it "returns marker if cell is occupied"

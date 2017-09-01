@@ -14,7 +14,7 @@
 
 (defn evaluate-computer-move [board my-marker computer-marker]
   (let [computer-move (get-move board {:marker computer-marker :type :hard-computer} {:marker my-marker})
-       updated-board (board/put-marker board computer-move computer-marker)]
+       updated-board (board/put-marker board computer-marker computer-move)]
     (can-i-win? updated-board my-marker computer-marker true)))
 
 ;TODO pass in my-player/computer-player instead of my-marker/computer-marker
@@ -28,7 +28,7 @@
 (describe "hard-computer"
           (around [it] (with-out-str (it)))
           (it "is unbeatable against all possible states"
-              (should= false (can-i-win? (board/new-board) :X :O true))))
+              (should= false (can-i-win? (board/new-board 3) :X :O true))))
 
 
 ;(describe "hard-computer"

@@ -5,11 +5,10 @@
 (defn size [board]
   (count board))
 
-; TODO get rid of implicit default
-(defn new-board ([] (new-board 3))
-  ([axis-length] (vec (repeat (* axis-length axis-length) empty-space))))
+(defn new-board [axis-size] 
+  (vec (repeat (* axis-size axis-size) empty-space)))
 
-(defn put-marker [board cell marker]
+(defn put-marker [board marker cell]
   (assoc board (dec cell) marker))
 
 (defn get-marker [cell board]
