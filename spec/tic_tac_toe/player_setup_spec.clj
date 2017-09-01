@@ -8,8 +8,8 @@
 
           (it "initializes human player"
               (should= {:type :human :marker :X} 
-                       (with-in-str "X\nO" (initialize-player :human))))
+                       (with-in-str "X\nO" (setup-new :human))))
 
           (it "initializes computer player"
               (should= {:type :computer :marker :X} 
-                       (with-in-str "X\n" (initialize-player :computer :O)))))
+                       (with-in-str "X\n" (setup-new :computer :O)))))

@@ -14,22 +14,22 @@
       3 [:human :hard-computer] 
       (do (console-ui/print-message "Bad Option") (recur options)))))
 
-(defn- setup-players [game-type]
+(defn- get-players [game-type]
   (let [[main-player-type opponent-player-type] game-type
-        main-player (player-setup/initialize-player main-player-type)
-        opponent-player (player-setup/initialize-player opponent-player-type (:marker main-player))]
+        main-player (player-setup/setup-new main-player-type)
+        opponent-player (player-setup/setup-new opponent-player-type (:marker main-player))]
     [main-player opponent-player]))
 
-(defn- construct-game [players board]
+(defn- make-game [players board]
   (let [[main-player opponent-player] players] 
     {:current-player main-player 
      :opponent-player opponent-player
      :board board }))
 
-(defn new-game [configuration]
+(defn setup-new [configuration]
   (let [{:keys [board-size options]} configuration
         game-type (get-game-type options)
-        players (setup-players game-type)
+        players (get-players game-type)
         board (board/new-board board-size)]
-    (construct-game players board)))
+    (make-game players board)))
 

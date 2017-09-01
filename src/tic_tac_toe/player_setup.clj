@@ -20,9 +20,12 @@
     (console-ui/print-computer-marker marker)
     marker))
 
-(defn initialize-player 
-  ([player-type] (initialize-player player-type nil))
+(defn make-player [player-type marker]
+  {:type player-type :marker marker})
+
+(defn setup-new 
+  ([player-type] (setup-new player-type nil))
   ([player-type taken-marker] 
-   (let [marker (get-marker player-type taken-marker)] 
-     {:type player-type :marker marker})))
+   (->> (get-marker player-type taken-marker)
+        (make-player player-type))))
 

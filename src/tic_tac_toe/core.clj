@@ -11,7 +11,7 @@
                                "3. Human vs. Hard Computer" ]})
 
 (defn -main []
-  (-> (console-game-setup/new-game configuration)
+  (-> (console-game-setup/setup-new configuration)
       (console-runner/run)))
 
 
