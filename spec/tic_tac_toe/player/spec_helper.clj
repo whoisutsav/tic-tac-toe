@@ -13,7 +13,7 @@
         (->> (possible-boards board my-marker) 
              (map #(can-i-win? my-player computer-player false %))
              (reduce #(or %1 %2)))
-        (->> (get-move board computer-player my-player)
+        (->> (get-move {:board board :current-player computer-player :opponent-player my-player})
              (board/put-marker board computer-marker)
              (recur my-player computer-player true)))))) 
 

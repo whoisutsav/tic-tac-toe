@@ -71,7 +71,8 @@
           :else (recur (rest candidates) new-alpha best-candidate))))))
 
 
-(defmethod get-move :hard-computer [board player opponent]
-  (let [my-marker (:marker player)
-        opponent-marker (:marker opponent)]
+(defmethod get-move :hard-computer [game]
+  (let [board (:board game)
+        my-marker (:marker (:current-player game))
+        opponent-marker (:marker (:opponent-player game))]
     (minimax-move board my-marker opponent-marker)))

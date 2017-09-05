@@ -5,6 +5,10 @@
 
 (def invalid-option-message "Invalid option")
 
+(defn- invalid-option []
+  (console-ui/print-message invalid-option-message)
+  (console-ui/get-user-input))
+
 (defn- game-type-loop [options]
   (console-ui/print-menu options)
   (loop [choice (console-ui/get-user-input)] 
@@ -12,12 +16,12 @@
       1 [:human :human]
       2 [:human :computer] 
       3 [:human :hard-computer] 
-      (do (console-ui/print-message invalid-option-message) (recur options)))))
+      (recur (invalid-option)))))
 
-(defn- get-players [player-types]
-  (let [[main-player-type opponent-player-type] player-types
-        main-player (player-setup/setup-new main-player-type)
-        opponent-player (player-setup/setup-new opponent-player-type (:marker main-player))]
+(defn- get-players [game-type]
+  (let [[main-type opponent-type] game-type
+        main-player (player-setup/setup-new main-type)
+        opponent-player (player-setup/setup-new opponent-type (:marker main-player))]
     [main-player opponent-player]))
 
 (defn- make-game [players board]
@@ -27,8 +31,8 @@
      :board board }))
 
 (defn setup-new [configuration]
-  (let [{:keys [board-size player-options]} configuration
-        players (->> (game-type-loop player-options)
+  (let [{:keys [board-size options]} configuration
+        players (->> (game-type-loop options)
                      (get-players)) 
         board (board/new-board board-size)]
     (make-game players board)))

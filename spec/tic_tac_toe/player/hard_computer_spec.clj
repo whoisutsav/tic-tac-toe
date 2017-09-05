@@ -14,6 +14,8 @@
 
 (describe "hard-computer"
           (it "chooses the best space"
-              (should= 9 (get-move [ :_ :x :_
-                                     :o :o :x
-                                     :x :x :_ ] {:marker :o :type :hard-computer} {:marker :x :type :human}))))
+              (should= 9 (get-move {:board [:_ :x :_
+                                            :o :o :x
+                                            :x :x :_ ] 
+                                    :current-player {:marker :o :type :hard-computer} 
+                                    :opponent-player {:marker :x :type :human}}))))

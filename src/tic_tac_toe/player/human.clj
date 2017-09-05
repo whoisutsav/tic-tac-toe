@@ -14,7 +14,7 @@
         (read-string move)
         (recur (invalid-move error-str))))))
 
-(defmethod get-move :human [board _ _]
+(defmethod get-move :human [game]
   (console-ui/print-move-prompt)
-  (move-loop board))
+  (move-loop (:board game)))
 
