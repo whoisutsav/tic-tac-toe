@@ -4,6 +4,7 @@
 
 (defn size [board]
   (case (count board)
+    4 2
     9 3
     16 4))
 

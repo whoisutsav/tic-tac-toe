@@ -3,19 +3,19 @@
             [tic-tac-toe.player-setup :as player-setup]
             [tic-tac-toe.board :as board])) 
 
+(def invalid-option-message "Invalid option")
 
-;TODO remove hard-coded choices 
-(defn- get-game-type [options]
+(defn- game-type-loop [options]
   (console-ui/print-menu options)
-  (let [choice (read-string (console-ui/get-user-input))] 
-    (case choice 
+  (loop [choice (console-ui/get-user-input)] 
+    (case (read-string choice) 
       1 [:human :human]
       2 [:human :computer] 
       3 [:human :hard-computer] 
-      (do (console-ui/print-message "Bad Option") (recur options)))))
+      (do (console-ui/print-message invalid-option-message) (recur options)))))
 
-(defn- get-players [game-type]
-  (let [[main-player-type opponent-player-type] game-type
+(defn- get-players [player-types]
+  (let [[main-player-type opponent-player-type] player-types
         main-player (player-setup/setup-new main-player-type)
         opponent-player (player-setup/setup-new opponent-player-type (:marker main-player))]
     [main-player opponent-player]))
@@ -27,9 +27,9 @@
      :board board }))
 
 (defn setup-new [configuration]
-  (let [{:keys [board-size options]} configuration
-        game-type (get-game-type options)
-        players (get-players game-type)
+  (let [{:keys [board-size player-options]} configuration
+        players (->> (game-type-loop player-options)
+                     (get-players)) 
         board (board/new-board board-size)]
     (make-game players board)))
 

@@ -22,8 +22,10 @@
            (conj (diagonal size))
            (conj (reverse-diagonal size))))))
 
+(def win-lines-memo (memoize win-lines))
+
 (defn winner [board]
-  (loop [lines (win-lines board)]
+  (loop [lines (win-lines-memo board)]
     (if (empty? lines)
       nil
       (or (reduce #(if (= %1 %2) %1) (first lines)) (recur (rest lines))))))

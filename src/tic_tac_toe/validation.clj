@@ -15,3 +15,4 @@
     (not (rules/single-letter? marker)) {:error "Marker must be a single letter"}
     (not (rules/marker-available? marker taken-marker)) {:error "Marker taken. Please choose a different marker"}
     :else {:error nil}))
+

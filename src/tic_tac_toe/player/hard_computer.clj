@@ -4,7 +4,10 @@
             [tic-tac-toe.board :as board]
             [tic-tac-toe.console-ui :as console-ui]))
 
-(def max-depth 6)
+(defn max-depth [board]
+  (if (> (board/size board) 3)
+    5
+    9))
 
 (defn- leaf-node-value [board my-marker]
   (let [winner (decision/winner board)] 
@@ -21,7 +24,7 @@
   (if (decision/over? board)
     (leaf-node-value board my-marker)
     (cond 
-      (> depth max-depth) 0 
+      (> depth (max-depth board)) 0 
       (even? depth) ; maximizing player
         (loop [possible-boards (possible-boards board my-marker)
                alpha alpha 

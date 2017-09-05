@@ -27,3 +27,4 @@
               (should= {:error "Marker taken. Please choose a different marker"} (marker "B" "B")))
           (it "returns empty error hash if marker is valid"
               (should= {:error nil} (marker "S" nil))))
+
