@@ -15,7 +15,7 @@
        (board/put-marker board (:marker current-player))
        (assoc {:current-player opponent-player :opponent-player current-player} :board)))
 
-(defn- complete-game [board]
+(defn- end-game [board]
   (console-ui/print-board board)
   (if-let [winner (decision/winner board)]
     (console-ui/declare-winner winner)
@@ -23,7 +23,7 @@
 
 (defn run [{:keys [board current-player opponent-player] :as game}]
   (if (decision/over? board)
-      (complete-game board)
+      (end-game board)
       (->> (take-turn game)
            (recur))))
 
