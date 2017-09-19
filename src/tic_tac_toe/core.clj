@@ -1,6 +1,6 @@
 (ns tic-tac-toe.core
   (:require [tic-tac-toe.board :as board]
-            [tic-tac-toe.console-game-setup :as console-game-setup]
+            [tic-tac-toe.console.game-setup :as console-game-setup]
             [tic-tac-toe.console-runner :as console-runner]))
 
 (def configuration {

@@ -1,4 +1,4 @@
-(ns tic-tac-toe.console-ui 
+(ns tic-tac-toe.console.ui 
   (:require [clojure.string :as str]
             [tic-tac-toe.board :as board]))
 

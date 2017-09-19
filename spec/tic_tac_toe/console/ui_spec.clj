@@ -1,6 +1,6 @@
-(ns tic-tac-toe.console-ui-spec
+(ns tic-tac-toe.console.ui-spec
   (:require [speclj.core :refer :all]
-            [tic-tac-toe.console-ui :refer :all]))
+            [tic-tac-toe.console.ui :refer :all]))
 
 (describe "Game Setup"
   (describe "print-menu"

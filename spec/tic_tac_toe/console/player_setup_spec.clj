@@ -1,6 +1,6 @@
-(ns tic-tac-toe.player-setup-spec
+(ns tic-tac-toe.console.player-setup-spec
   (:require [speclj.core :refer :all]
-            [tic-tac-toe.player-setup :refer :all]))
+            [tic-tac-toe.console.player-setup :refer :all]))
 
 
 (describe "make-player"

@@ -1,6 +1,6 @@
-(ns tic-tac-toe.console-game-setup-spec
+(ns tic-tac-toe.console.game-setup-spec
   (:require [speclj.core :refer :all]
-            [tic-tac-toe.console-game-setup :refer :all]))
+            [tic-tac-toe.console.game-setup :refer :all]))
 
 (def empty-board [ :_ :_ :_
                    :_ :_ :_

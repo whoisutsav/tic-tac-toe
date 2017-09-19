@@ -1,5 +1,5 @@
-(ns tic-tac-toe.console-runner
-  (:require [tic-tac-toe.console-ui :as console-ui]
+(ns tic-tac-toe.console.runner
+  (:require [tic-tac-toe.console.ui :as console-ui]
             [tic-tac-toe.player :as player]
             [tic-tac-toe.player.human]
             [tic-tac-toe.player.computer]
