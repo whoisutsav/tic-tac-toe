@@ -3,7 +3,7 @@
   :url "http://github.com/whoisutsav/tic_tac_toe"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :main tic-tac-toe.web.server
+  :main tic-tac-toe.core-web
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [ring/ring-core "1.5.0"]
                  [ring/ring-jetty-adapter "1.5.0"]
