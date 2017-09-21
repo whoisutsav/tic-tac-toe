@@ -8,6 +8,7 @@ function Game(board, marker, opponent) {
     this.marker = marker;
     this.opponent = opponent;
     this.status = null;
+    this.winner = null;
 }
 
 Game.prototype.render = function() {
@@ -21,11 +22,16 @@ Game.prototype.render = function() {
         let y_offset = row * CANVAS_HEIGHT/3;
 
         ctx.strokeRect(x_offset, y_offset, CANVAS_WIDTH/3, CANVAS_HEIGHT/3);
+        ctx.font = '30px sans-serif';
+        ctx.textAlign = "center";
         ctx.fillText(value, x_offset + CANVAS_WIDTH/6, y_offset + CANVAS_HEIGHT/6);
     });
 
-    if (this.status == "WIN" || this.status == "DRAW") {
-        alert(this.status);
+    if (this.status === "WIN" || this.status === "DRAW") {
+        let message = this.status === "WIN" ? 
+            "Player " + this.winner + " wins!" :
+            "Cats game.";
+        alert(message);
     }
 }
 
@@ -44,14 +50,18 @@ Game.prototype.move = function(space) {
     }).then(function(response) {
         return response.json();   
     }).then(function(json) {
-        // TODO add end game logic
         that.board = json.board;
         that.status = json.status;
+        that.winner = json.winner;
         that.render();
     });
 }
 
 Game.prototype.handleClick = function(e) {
+    if (this.status === "WIN" || this.status === "DRAW") {
+        return;
+    };
+
     let row = Math.floor(e.offsetY / (CANVAS_HEIGHT/3));
     let column = Math.floor(e.offsetX / (CANVAS_WIDTH/3));
     let space = row * 3 + column + 1;

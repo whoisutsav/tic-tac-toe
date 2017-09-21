@@ -5,32 +5,36 @@
             [clojure.data.json :as json]
             [ring.util.response :refer [response]]))
 
-(defn map-response [{:keys [board current-player opponent-player] :as game}] 
-  {"board" board 
-   "marker" (:marker current-player)
-   "opponent" (:type opponent-player)}) 
+(def IN_PROGRESS "IN_PROGRESS")
+(def WIN "WIN")
+(def DRAW "DRAW")
 
-(defn ttt-response [ttt-response]
-  (-> ttt-response
+; TODO use get-in?
+; TODO not quite "response" - be more clear with words
+(defn assemble-body [params] 
+  { 
+    :status (:status params IN_PROGRESS)
+    :board (:board params) 
+    :marker (:marker (:current-player params))
+    :opponent (:type (:opponent-player params))
+    :winner (:winner params) 
+    }) 
+
+(defn flag-winner [params winner]
+  (-> params 
+      (assoc :winner winner)
+      (assoc :status WIN))) 
+
+(defn flag-draw [params]
+  (assoc params :status DRAW))
+
+; TODO change name
+(defn ttt-response [params]
+  (-> (assemble-body params)
       (json/write-str)
       (response)))
 
-(defn respond-game [game]
-  (-> (map-response game)
-      (assoc "status" "IN_PROGRESS")
-      (ttt-response)))
-
-(defn respond-win [game]
-  (-> (map-response game)
-      (assoc "status" "WIN")
-      (ttt-response)))
-
-(defn respond-draw [game]
-  (-> (map-response game)
-      (assoc "status" "DRAW")
-      (ttt-response)))
-
-
+; TODO clean up 
 (defn map-request [request]
   (let [params (:form-params request)]
     {
@@ -52,8 +56,8 @@
 
 (defn- end-game [game]
   (if-let [winner (decision/winner (:board game))]
-    (respond-win game)
-    (respond-draw game)
+    (-> game (flag-winner winner) (ttt-response))
+    (-> game (flag-draw) (ttt-response))
     ))
 
 ; TODO split into multiple functions 
@@ -65,7 +69,7 @@
         (end-game updated-game)
         (if (or (= :computer player-type) (= :hard-computer player-type)) 
           (recur updated-game)
-          (respond-game updated-game))))))
+          (ttt-response updated-game))))))
 
 (defn new-game [request]
   (-> {:board (board/new-board 3)
