@@ -3,46 +3,70 @@
             [tic-tac-toe.web.runner :refer :all]
             [tic-tac-toe.board :as board]))
 
-(describe "handle"
+
+(describe "map-request"
+          (it "turns a request into a game object"
+              (should= {
+                         :board [:X :O :_
+                                 :_ :_ :_
+                                 :_ :_ :_ ] 
+                         :current-player {:type :human-web :marker :Z }
+                         :opponent-player {:type :hard-computer :marker :O}
+                         :move 1
+                        }
+                       
+                       (map-request {:form-params
+                                     {"board" ["X" "O" "_"
+                                              "_" "_" "_"
+                                              "_" "_" "_"]
+                                      "marker" "Z"
+                                      "opponent" "hard-computer"
+                                      "move" "1"
+                                      }}))))
+
+(describe "new-game"
+          (it "returns a new-game"
+              (should= {
+                         :status "IN_PROGRESS"
+                         :board [:_ :_ :_
+                                 :_ :_ :_
+                                 :_ :_ :_ ] 
+                         :marker :X
+                         :opponent :hard-computer
+                         :winner nil }
+                       (new-game))))
+
+(describe "move"
           (it "takes turn"
               (should= { 
-                           "game_over" false
-                           "board" [:X :_ :_
-                                    :_ :_ :_
-                                    :_ :_ :_ ] 
-                           "current-player" {:marker :O :type :human-web}
-                           "opponent-player" {:marker :X :type :human-web}}
-                       (handle { 
-                           :board (board/new-board 3) 
-                           :current-player {:marker :X :type :human-web}
-                           :opponent-player {:marker :O :type :human-web}
-                           :move 1})))
-          (it "handles win"
-              (should= { 
-                           "game_over" true
-                           "message" "X wins"
-                           "board" [:X :O :X
-                                    :O :X :O
-                                    :X :_ :_ ]}
-                       (handle { 
-                                :board [:X :O :X
-                                        :O :X :O
-                                        :_ :_ :_] 
-                           :current-player {:marker :X :type :hard-computer}
-                           :opponent-player {:marker :O :type :human-web}
-                           :move nil})))
-          ; TODO convert to computer
-          (it "handles draw"
-              (should= { 
-                           "game_over" true
-                           "message" "Cats game."
-                           "board" [:X :O :X
-                                    :X :X :O
-                                    :O :X :O]}
-                       (handle { 
+                           :status "WIN"
+                           :winner :O
+                           :marker :X
+                           :opponent :hard-computer
                            :board [:X :O :X
-                                   :X :X :O
-                                   :O :_ :O] 
-                           :current-player {:marker :X :type :computer}
-                           :opponent-player {:marker :O :type :human-web}
-                           :move nil}))))
+                                   :_ :O :_
+                                   :X :O :_ ]}
+                       (move {:form-params { 
+                                "board" [:X :O :X
+                                         :_ :_ :_
+                                         :_ :O :_] 
+                                "marker" "X"
+                                "opponent" "hard-computer" 
+                                "move" "7"}})))
+          ;(it "handles draw"
+          ;    (should= { 
+          ;                 :status "DRAW"
+          ;                 :winner nil 
+          ;                 :marker :X
+          ;                 :opponent :hard-computer
+          ;                 :board [:X :O :X
+          ;                         :X :O :O
+          ;                         :O :X :X ]}
+          ;             (move {:form-params { 
+          ;                      "board" [:X :O :X
+          ;                               :X :O :O
+          ;                               :O :X :_] 
+          ;                      "marker" "X"
+          ;                      "opponent" "hard-computer" 
+          ;                      "move" "9"}})))
+          )

@@ -71,8 +71,18 @@ Game.prototype.handleClick = function(e) {
     }
 }
 
-function init() {
-    fetch("http://localhost:3000/new-game").then(function(response) {
+function start() {
+    let form = document.getElementById("gameSetupForm");
+    let opponent = form.opponent.value;
+    let params = new URLSearchParams();
+    params.set("opponent", opponent);
+
+    fetch("http://localhost:3000/new-game", 
+        {
+            method: "POST",
+            body: params
+        }
+    ).then(function(response) {
         return response.json();
     }).then(function(json) {
         let game = new Game(
@@ -80,11 +90,12 @@ function init() {
             json['marker'],
             json['opponent']
         ); 
+
         game.render();
-        document.getElementById('game').addEventListener('click', game.handleClick.bind(game));
+        document.getElementById("game").addEventListener('click', game.handleClick.bind(game));
+
+        document.getElementById("startButton").remove();
     });
 }
 
-if (document.readyState === 'complete') init();
-else window.addEventListener('load', init);
 

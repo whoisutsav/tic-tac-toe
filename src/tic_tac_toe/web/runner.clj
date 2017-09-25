@@ -1,8 +1,11 @@
 (ns tic-tac-toe.web.runner
   (:require [tic-tac-toe.board :as board]
+            [tic-tac-toe.game :as game]
             [tic-tac-toe.decision :as decision]
-            [tic-tac-toe.player :as player]
-            [clojure.data.json :as json]
+            [tic-tac-toe.basic-game :as basic-game]
+            [tic-tac-toe.player.human-web] ;TODO remove
+            [tic-tac-toe.player.hard-computer] ;TODO remove
+            [tic-tac-toe.console.player-setup :as player-setup]
             [ring.util.response :refer [response]]))
 
 (def IN_PROGRESS "IN_PROGRESS")
@@ -11,14 +14,12 @@
 
 ; TODO use get-in?
 ; TODO not quite "response" - be more clear with words
-(defn assemble-body [params] 
-  { 
-    :status (:status params IN_PROGRESS)
+(defn ttt-response [params] 
+  { :status (:status params IN_PROGRESS)
     :board (:board params) 
     :marker (:marker (:current-player params))
     :opponent (:type (:opponent-player params))
-    :winner (:winner params) 
-    }) 
+    :winner (:winner params)}) 
 
 (defn flag-winner [params winner]
   (-> params 
@@ -28,42 +29,34 @@
 (defn flag-draw [params]
   (assoc params :status DRAW))
 
-; TODO change name
-(defn ttt-response [params]
-  (-> (assemble-body params)
-      (json/write-str)
-      (response)))
-
-; TODO clean up 
+; TODO make this simpler - should request format be changed?
 (defn map-request [request]
-  (let [params (:form-params request)]
-    {
-     :board (->> (get params "board")
-                 (map keyword)
-                 (vec))
-     :current-player {:type :human-web :marker (keyword (get params "marker"))}
-     :opponent-player {:type (keyword (get params "opponent")) :marker :O}
-     :move (read-string (get params "move"))
-     }
-    ))
+  (let [params (-> (:form-params request))
+        board (->> (get params "board")
+                   (mapv keyword))
+        current-player (->> (get params "marker")
+                            (keyword)
+                            (player-setup/make-player :human-web))
+        opponent-player (-> (get params "opponent")
+                            (keyword)
+                            (player-setup/make-player :O))
+        move (-> (get params "move") (read-string))]
+    {:board board
+     :current-player current-player
+     :opponent-player opponent-player
+     :move move
+     }))
 
-(defn- take-turn [{:keys [board current-player opponent-player] :as game}]
-  (->> (player/get-move game) 
-       (board/put-marker board (:marker current-player))
-       (assoc {:current-player opponent-player :opponent-player current-player} :board))
-  
-  )
 
 (defn- end-game [game]
   (if-let [winner (decision/winner (:board game))]
     (-> game (flag-winner winner) (ttt-response))
-    (-> game (flag-draw) (ttt-response))
-    ))
+    (-> game (flag-draw) (ttt-response))))
 
 ; TODO split into multiple functions 
 (defn move [request]
   (loop [game (map-request request)]
-    (let [updated-game (take-turn game)
+    (let [updated-game (basic-game/take-turn game)
           player-type (:type (:current-player updated-game))]
       (if (decision/over? (:board updated-game)) 
         (end-game updated-game)
@@ -71,10 +64,14 @@
           (recur updated-game)
           (ttt-response updated-game))))))
 
+
 (defn new-game [request]
-  (-> {:board (board/new-board 3)
-       :marker "X"
-       :opponent :hard-computer}
-      (json/write-str)
-      (response)))
+  (let [opponent-type (-> (:form-params request)
+                     (get "opponent" :computer)
+                     (keyword))
+        current-player (player-setup/make-player :human-web :X)
+        opponent-player (player-setup/make-player opponent-type :O)
+        board (board/new-board 3)] 
+    (-> (game/make-game [current-player opponent-player] board)
+        (ttt-response))))
 

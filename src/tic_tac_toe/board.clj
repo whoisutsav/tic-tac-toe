@@ -23,6 +23,5 @@
 (defn get-empty-spaces [board]
   (let [board-size (size board)] 
     (->> (range 1 (inc (* board-size board-size)))
-         (filter #(nil? (get-marker % board)))
-         (vec))))
+         (filterv #(nil? (get-marker % board))))))
 
