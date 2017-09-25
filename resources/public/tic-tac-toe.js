@@ -1,8 +1,5 @@
 // tic-tac-toe.js
 
-const CANVAS_WIDTH=500;
-const CANVAS_HEIGHT=500;
-
 function Game(board, marker, opponent) {
     this.board = board;
     this.marker = marker;
@@ -11,91 +8,77 @@ function Game(board, marker, opponent) {
     this.winner = null;
 }
 
-Game.prototype.render = function() {
-    let ctx = document.getElementById('game').getContext('2d');
-    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
-    this.board.forEach(function(value, index) {
-        let row = Math.floor(index/3);
-        let column = index % 3;
-        let x_offset = column * CANVAS_WIDTH/3;
-        let y_offset = row * CANVAS_HEIGHT/3;
-
-        ctx.strokeRect(x_offset, y_offset, CANVAS_WIDTH/3, CANVAS_HEIGHT/3);
-        ctx.font = '30px sans-serif';
-        ctx.textAlign = "center";
-        ctx.fillText(value, x_offset + CANVAS_WIDTH/6, y_offset + CANVAS_HEIGHT/6);
-    });
-
-    if (this.status === "WIN" || this.status === "DRAW") {
-        let message = this.status === "WIN" ? 
-            "Player " + this.winner + " wins!" :
-            "Cats game.";
-        alert(message);
-    }
+Game.prototype.isOver = function() {
+    return this.status === "WIN" || this.status === "DRAW";
 }
 
-Game.prototype.move = function(space) {
+Game.prototype.gameOverMessage = function() {
+    if (!this.isOver()) {
+        return null;
+    }
+    return this.status === "WIN" ? 
+        "Player " + this.winner + " wins!" :
+        "Cats game.";
+}
+
+Game.prototype.advance = function(space, callback) {
+    if (this.isOver() || this.board[space-1] !== "_") {
+        return;
+    };
+
     let that = this;
-    let params = new URLSearchParams();
+    let params = new URLSearchParams([
+        ["marker", this.marker],
+        ["opponent", this.opponent],
+        ["move", space]
+    ]);
     this.board.forEach(function(element) {
         params.append("board", element);
     });
-    params.set("marker", this.marker);
-    params.set("opponent", this.opponent);
-    params.set("move", space);
     fetch("http://localhost:3000/move", {
         method: "POST",
         body: params
     }).then(function(response) {
         return response.json();   
     }).then(function(json) {
-        that.board = json.board;
+        that.board =  json.board;
         that.status = json.status;
         that.winner = json.winner;
-        that.render();
+        callback.call();
     });
 }
 
-Game.prototype.handleClick = function(e) {
-    if (this.status === "WIN" || this.status === "DRAW") {
-        return;
-    };
 
-    let row = Math.floor(e.offsetY / (CANVAS_HEIGHT/3));
-    let column = Math.floor(e.offsetX / (CANVAS_WIDTH/3));
-    let space = row * 3 + column + 1;
+function GameContext(gameParams) {
+    this.game = new Game(gameParams.board, gameParams.marker, gameParams.opponent);
+    this.canvas = document.getElementById("gameCanvas"); 
+    this.display = new Display(this.canvas.getContext('2d'), this.canvas.width, this.canvas.height);
+}
 
-    if (this.board[space-1] === "_") {
-        this.move(space);
-    }
+GameContext.prototype.init = function() {
+    this.canvas.addEventListener('click', this.handleClick.bind(this));
+    this.display.render(this.game);
+}
+
+GameContext.prototype.handleClick = function(e) {
+    let space = this.display.getCell(e.offsetX, e.offsetY);
+    let that = this;
+    this.game.advance(space, function() {
+        that.display.render(that.game)
+    });
 }
 
 function start() {
     let form = document.getElementById("gameSetupForm");
     let opponent = form.opponent.value;
-    let params = new URLSearchParams();
-    params.set("opponent", opponent);
 
-    fetch("http://localhost:3000/new-game", 
-        {
-            method: "POST",
-            body: params
-        }
-    ).then(function(response) {
+    fetch("http://localhost:3000/new-game?opponent=" + opponent).then(function(response) {
         return response.json();
-    }).then(function(json) {
-        let game = new Game(
-            json['board'],
-            json['marker'],
-            json['opponent']
-        ); 
-
-        game.render();
-        document.getElementById("game").addEventListener('click', game.handleClick.bind(game));
+    }).then(function(gameParams) {
+        let gameContext = new GameContext(gameParams);
+        gameContext.init();
 
         document.getElementById("startButton").remove();
     });
 }
-
 
