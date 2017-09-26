@@ -1,17 +1,17 @@
 (ns tic-tac-toe.decision
   (:require [tic-tac-toe.board :as board]))
 
-(defn rows [size]
+(defn- rows [size]
   (->> (range 1 (inc (* size size)))
        (partition size)))
 
-(defn columns [size]
+(defn- columns [size]
   (apply map vector (rows size)))
 
-(defn diagonal [size]
+(defn- diagonal [size]
   (range 1 (inc (* size size)) (inc size)))
 
-(defn reverse-diagonal [size]
+(defn- reverse-diagonal [size]
   (range size (* size size) (dec size)))
 
 (defn win-lines [board]
@@ -22,10 +22,8 @@
            (conj (diagonal size))
            (conj (reverse-diagonal size))))))
 
-(def win-lines-memo (memoize win-lines))
-
 (defn winner [board]
-  (loop [lines (win-lines-memo board)]
+  (loop [lines (win-lines board)]
     (if (empty? lines)
       nil
       (or (reduce #(if (= %1 %2) %1) (first lines)) (recur (rest lines))))))
