@@ -72,7 +72,9 @@ function start() {
     let form = document.getElementById("gameSetupForm");
     let opponent = form.opponent.value;
 
-    fetch("http://localhost:3000/new-game?opponent=" + opponent).then(function(response) {
+    fetch("http://localhost:3000/new-game?opponent=" + opponent, {
+        method: "POST"
+    }).then(function(response) {
         return response.json();
     }).then(function(gameParams) {
         let gameContext = new GameContext(gameParams);

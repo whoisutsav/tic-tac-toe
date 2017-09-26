@@ -1,10 +1,10 @@
-(ns tic-tac-toe.web.runner-spec
+(ns tic-tac-toe.web.handler-spec
   (:require [speclj.core :refer :all]
-            [tic-tac-toe.web.runner :refer :all]
+            [tic-tac-toe.web.handler :refer :all]
             [tic-tac-toe.board :as board]))
 
 
-(describe "map-request"
+(describe "convert-to-game"
           (it "turns a request into a game object"
               (should= {
                          :board [:X :O :_
@@ -15,7 +15,7 @@
                          :move 1
                         }
                        
-                       (map-request {:form-params
+                       (convert-to-game {:form-params
                                      {"board" ["X" "O" "_"
                                               "_" "_" "_"
                                               "_" "_" "_"]
@@ -24,8 +24,8 @@
                                       "move" "1"
                                       }}))))
 
-(describe "new-game"
-          (it "returns a new-game"
+(describe "handle-new"
+          (it "returns a handle-new"
               (should= {
                          :status "IN_PROGRESS"
                          :board [:_ :_ :_
@@ -34,7 +34,7 @@
                          :marker :X
                          :opponent :hard-computer
                          :winner nil }
-                       (new-game))))
+                       (:body (handle-new {:params {"opponent" "hard-computer"}})))))
 
 (describe "move"
           (it "takes turn"
@@ -46,13 +46,13 @@
                            :board [:X :O :X
                                    :_ :O :_
                                    :X :O :_ ]}
-                       (move {:form-params { 
+                       (:body (handle {:form-params { 
                                 "board" [:X :O :X
                                          :_ :_ :_
                                          :_ :O :_] 
                                 "marker" "X"
                                 "opponent" "hard-computer" 
-                                "move" "7"}})))
+                                "move" "7"}}))))
           ;(it "handles draw"
           ;    (should= { 
           ;                 :status "DRAW"
@@ -62,7 +62,7 @@
           ;                 :board [:X :O :X
           ;                         :X :O :O
           ;                         :O :X :X ]}
-          ;             (move {:form-params { 
+          ;             (handle {:form-params { 
           ;                      "board" [:X :O :X
           ;                               :X :O :O
           ;                               :O :X :_] 

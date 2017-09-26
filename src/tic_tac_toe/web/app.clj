@@ -2,24 +2,20 @@
   (:require [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.resource :refer [wrap-resource]]
             [ring.util.response :refer [response,not-found,file-response]]
-            [clojure.data.json :as json]
-            [tic-tac-toe.web.runner :as web-runner]))
+            [ring.middleware.json :refer [wrap-json-response]]
+            [tic-tac-toe.web.handler :as web-handler]))
 
-(defn wrap-json [handler]
-  (fn [request]
-    (-> (handler request)
-        (json/write-str)
-        (response))))
+
+(defn index [request]
+  (file-response "index.html" {:root "resources/public"}))
 
 (def routes 
-  {
-   "/" (fn [request] (file-response "index.html" {:root "resources/public"}))
-   "/move" (wrap-json web-runner/move)
-   "/new-game" (wrap-json web-runner/new-game) 
-   })
+  {:get   {"/" index}
+   :post  {"/move" web-handler/handle
+           "/new-game" web-handler/handle-new}})
 
 (defn route [request]
-  (let [handler (get routes (:uri request))]
+  (let [handler (get ((:request-method request) routes) (:uri request))]
       (if (nil? handler)
         (not-found "Resource not found")
         (handler request))))
@@ -27,4 +23,5 @@
 (def app 
   (-> route 
       (wrap-resource "public")
-      (wrap-params)))
+      (wrap-params)
+      (wrap-json-response)))
