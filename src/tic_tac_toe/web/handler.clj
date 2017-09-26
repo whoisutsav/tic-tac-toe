@@ -1,5 +1,6 @@
 (ns tic-tac-toe.web.handler
   (:require [tic-tac-toe.board :as board]
+            [clojure.walk :as walk]
             [tic-tac-toe.game :as game]
             [tic-tac-toe.decision :as decision]
             [tic-tac-toe.basic-game :as basic-game]
@@ -8,38 +9,27 @@
             [tic-tac-toe.console.player-setup :as player]
             [ring.util.response :refer [response]]))
 
+(def active "active")
+(def win "win")
+(def draw "draw")
 
-(defn convert-to-game [request]
-  (let [params (-> (:form-params request))
-        board (->> (get params "board")
-                   (mapv keyword))
-        current-player (->> (get params "marker")
-                            (keyword)
-                            (player/make-player :human-web))
-        opponent-player (-> (get params "opponent")
-                            (keyword)
-                            (player/make-player :O))
-        move (-> (get params "move") (read-string))]
-    {:board board
-     :current-player current-player
-     :opponent-player opponent-player
-     :move move
-     }))
+(defn convert [params]
+  (walk/postwalk #(if (string? %) (keyword %) %) params))
 
+(defn add-meta [params winner state]
+  (-> (assoc params :winner winner)
+      (assoc :state state)))
 
-(def IN_PROGRESS "IN_PROGRESS")
-(def WIN "WIN")
-(def DRAW "DRAW")
+(defn- default-meta [params]
+  (add-meta params nil active))
 
-(defn ttt-response [params] 
-  (-> { :status (:status params IN_PROGRESS)
-        :board (:board params) 
-        :marker (-> params :current-player :marker)
-        :opponent (-> params :opponent-player :type)
-        :winner (:winner params)}
-      response)) 
+(defn- winner-meta [params winner]
+  (add-meta params winner win)) 
 
-(defn- create-new-game [opponent-type]
+(defn- draw-meta [params]
+  (add-meta params nil draw))
+
+(defn- new-game [opponent-type]
   (let [current-player (player/make-player :human-web :X)
         opponent-player (player/make-player opponent-type :O)
         players [current-player opponent-player]
@@ -47,31 +37,21 @@
     (game/make-game players board)))
 
 (defn handle-new [request]
-  (let [opponent-type (-> (:params request)
-                          (get "opponent" :computer)
-                          keyword)]
-    (-> (create-new-game opponent-type) (ttt-response))))
-
-(defn- flag-winner [params winner]
-  (-> (assoc params :winner winner)
-      (assoc :status WIN))) 
-
-(defn- flag-draw [params]
-  (assoc params :status DRAW))
+  (let [opponent-type (-> (convert (:params request)) (:opponent :computer))]
+    (-> (new-game opponent-type) (default-meta) (response))))
 
 (defn- end-game [game]
   (if-let [winner (decision/winner (:board game))]
-    (-> game (flag-winner winner))
-    (-> game (flag-draw))))
+    (winner-meta game winner)
+    (draw-meta game)))
 
 (declare move)
 
 (defn- recur-move [game]
-  (let [player-type (-> (:current-player game) 
-                        :type)] 
+  (let [player-type (:type (:current-player game))] 
     (if (or (= :computer player-type) (= :hard-computer player-type))
       (move game)
-      game)))
+      (default-meta game))))
 
 (defn- move [game]
   (let [updated-game (basic-game/take-turn game)]
@@ -80,6 +60,6 @@
         (recur-move updated-game))))
 
 (defn handle [request]
-  (let [game (convert-to-game request)]
-    (-> game (move) (ttt-response))))
+  (let [game (convert (:body request))]
+    (-> game (move) (response))))
 

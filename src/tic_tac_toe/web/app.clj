@@ -2,7 +2,7 @@
   (:require [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.resource :refer [wrap-resource]]
             [ring.util.response :refer [response,not-found,file-response]]
-            [ring.middleware.json :refer [wrap-json-response]]
+            [ring.middleware.json :refer [wrap-json-response,wrap-json-body]]
             [tic-tac-toe.web.handler :as web-handler]))
 
 
@@ -24,4 +24,5 @@
   (-> route 
       (wrap-resource "public")
       (wrap-params)
+      (wrap-json-body {:keywords? true})
       (wrap-json-response)))

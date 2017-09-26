@@ -1,11 +1,10 @@
 // tic-tac-toe.js
 
-function Game(board, marker, opponent) {
+function Game(board, currentPlayer, opponentPlayer) {
     this.board = board;
-    this.marker = marker;
-    this.opponent = opponent;
+    this.currentPlayer = currentPlayer;
+    this.opponentPlayer = opponentPlayer;
     this.status = null;
-    this.winner = null;
 }
 
 Game.prototype.isOver = function() {
@@ -17,7 +16,7 @@ Game.prototype.gameOverMessage = function() {
         return null;
     }
     return this.status === "WIN" ? 
-        "Player " + this.winner + " wins!" :
+        "Player " + "TBD" + " wins!" :
         "Cats game.";
 }
 
@@ -27,30 +26,32 @@ Game.prototype.advance = function(space, callback) {
     };
 
     let that = this;
-    let params = new URLSearchParams([
-        ["marker", this.marker],
-        ["opponent", this.opponent],
-        ["move", space]
-    ]);
-    this.board.forEach(function(element) {
-        params.append("board", element);
-    });
+    let body = {
+        "current-player": this.currentPlayer,
+        "opponent-player": this.opponentPlayer,
+        "board": this.board,
+        "move": space
+    }
+
     fetch("http://localhost:3000/move", {
+        headers: {"Content-Type": "application/json"},
         method: "POST",
-        body: params
+        body: JSON.stringify(body) 
     }).then(function(response) {
         return response.json();   
     }).then(function(json) {
-        that.board =  json.board;
-        that.status = json.status;
-        that.winner = json.winner;
+        that.board =  json["board"];
+        that.currentPlayer = json["current-player"];
+        that.opponentPlayer = json["opponent-player"];
         callback.call();
     });
 }
 
 
 function GameContext(gameParams) {
-    this.game = new Game(gameParams.board, gameParams.marker, gameParams.opponent);
+    this.game = new Game(gameParams["board"], 
+                         gameParams["current-player"],
+                         gameParams["opponent-player"]);
     this.canvas = document.getElementById("gameCanvas"); 
     this.display = new Display(this.canvas.getContext('2d'), this.canvas.width, this.canvas.height);
 }
