@@ -4,19 +4,20 @@ function Game(board, currentPlayer, opponentPlayer) {
     this.board = board;
     this.currentPlayer = currentPlayer;
     this.opponentPlayer = opponentPlayer;
-    this.status = null;
+    this.state = null;
+    this.winner = null;
 }
 
 Game.prototype.isOver = function() {
-    return this.status === "WIN" || this.status === "DRAW";
+    return this.state === "win" || this.state === "draw";
 }
 
 Game.prototype.gameOverMessage = function() {
     if (!this.isOver()) {
         return null;
     }
-    return this.status === "WIN" ? 
-        "Player " + "TBD" + " wins!" :
+    return this.state === "win" ? 
+        "Player " + this.winner + " wins!" :
         "Cats game.";
 }
 
@@ -33,9 +34,9 @@ Game.prototype.advance = function(space, callback) {
         "move": space
     }
 
-    fetch("http://localhost:3000/move", {
+    fetch("http://localhost:3000/game", {
         headers: {"Content-Type": "application/json"},
-        method: "POST",
+        method: "PUT",
         body: JSON.stringify(body) 
     }).then(function(response) {
         return response.json();   
@@ -43,6 +44,8 @@ Game.prototype.advance = function(space, callback) {
         that.board =  json["board"];
         that.currentPlayer = json["current-player"];
         that.opponentPlayer = json["opponent-player"];
+        that.state = json["state"];
+        that.winner = json["winner"];
         callback.call();
     });
 }
@@ -73,7 +76,7 @@ function start() {
     let form = document.getElementById("gameSetupForm");
     let opponent = form.opponent.value;
 
-    fetch("http://localhost:3000/new-game?opponent=" + opponent, {
+    fetch("http://localhost:3000/game?opponent=" + opponent, {
         method: "POST"
     }).then(function(response) {
         return response.json();

@@ -1,4 +1,4 @@
-(ns tic-tac-toe.console.runner
+(ns tic-tac-toe.console.game-runner
   (:require [tic-tac-toe.console.ui :as console-ui]
             [tic-tac-toe.basic-game :as basic-game]
             [tic-tac-toe.player :as player]

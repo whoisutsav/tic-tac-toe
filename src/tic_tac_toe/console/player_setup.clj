@@ -22,8 +22,7 @@
   (human-marker-loop taken-marker))
 
 (defmethod get-marker :default [_ taken-marker]
-  (let [marker (-> (remove #(= taken-marker %) default-markers)
-                   (first))]
+  (let [marker (-> (remove #(= taken-marker %) default-markers) (first))]
     (console-ui/print-computer-marker marker)
     marker))
 
