@@ -11,7 +11,7 @@
    :post  {"/game" handlers/new-game}
    :put {"/game" handlers/update-game}})
 
-(defn route [request]
+(defn- route [request]
   (let [handler (get ((:request-method request) routes) (:uri request))]
       (if (nil? handler)
         (not-found "Resource not found")

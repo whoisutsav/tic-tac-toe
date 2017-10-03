@@ -9,10 +9,9 @@
 
 (defn- move-loop [board]
   (loop [move (console-ui/get-user-input)] 
-    (let [error-str (:error (validation/move board move))]
-      (if (nil? error-str) 
-        (read-string move)
-        (recur (invalid-move error-str))))))
+    (if-let [error-str (:error (validation/move board move))]
+      (recur (invalid-move error-str))
+      (read-string move))))
 
 (defmethod get-move :human [game]
   (console-ui/print-move-prompt)

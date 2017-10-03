@@ -22,14 +22,15 @@
            (conj (diagonal size))
            (conj (reverse-diagonal size))))))
 
+(defn- full? [board]
+  (empty? (board/empty-spaces board))) 
+
 (defn winner [board]
   (loop [lines (win-lines board)]
     (if (empty? lines)
       nil
       (or (reduce #(if (= %1 %2) %1) (first lines)) (recur (rest lines))))))
 
-(defn- no-more-moves? [board]
-  (empty? (board/get-empty-spaces board))) 
-
 (defn over? [board]
-  (or (not= (winner board) nil) (no-more-moves? board)))
+  (-> (or (full? board) (winner board))
+      (boolean)))

@@ -8,16 +8,16 @@
     5
     9))
 
+(defn possible-boards [board marker]
+  (->> (board/empty-spaces board)
+       (map #(board/put-marker board marker %)))) 
+
 (defn- leaf-node-value [board my-marker]
   (let [winner (decision/winner board)] 
       (cond 
         (nil? winner) 0
         (= winner my-marker) 1
         :else -1)))
-
-(defn possible-boards [board marker]
-  (->> (board/get-empty-spaces board)
-       (map #(board/put-marker board marker %)))) 
 
 (defn score [my-marker opponent-marker alpha beta depth board]
   (if (decision/over? board)
@@ -54,7 +54,7 @@
                 :else (recur (rest possible-boards) alpha beta new-best-score))))))))
 
 (defn minimax-move [board my-marker opponent-marker]
-  (loop [candidates (->> (board/get-empty-spaces board)
+  (loop [candidates (->> (board/empty-spaces board)
                          (map #(hash-map :move % :board (board/put-marker board my-marker %))))
          alpha Float/NEGATIVE_INFINITY 
          best-candidate {:move nil :board nil :score Float/NEGATIVE_INFINITY}]
