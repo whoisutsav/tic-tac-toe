@@ -4,28 +4,28 @@
             [tic-tac-toe.basic-game :as basic-game]))
 
 (defn- add-meta [params winner state]
-  (assoc params :winner winner :state state))
+  (merge params {:winner winner :state state}))
 
-(defn- default-metadata [params]
+(defn- metadata-active [params]
   (add-meta params nil "active"))
 
-(defn- win-metadata [params winner]
+(defn- metadata-win [params winner]
   (add-meta params winner "win")) 
 
-(defn- draw-metadata [params]
+(defn- metadata-draw [params]
   (add-meta params nil "draw"))
 
 (defn- end-game [game]
   (if-let [winner (decision/winner (:board game))]
-    (win-metadata game winner)
-    (draw-metadata game)))
+    (metadata-win game winner)
+    (metadata-draw game)))
 
 (defn- recur-move [game]
   (declare move)
   (let [current-player (:type (:current-player game))] 
     (if (or (= :computer current-player) (= :hard-computer current-player))
       (move game)
-      (default-metadata game))))
+      (metadata-active game))))
 
 (defn move [game]
   (let [updated-game (basic-game/take-turn game)]
@@ -38,5 +38,5 @@
     (-> {:board board
          :current-player {:type :human-web :marker :X}
          :opponent-player {:type opponent-type :marker :O}}
-        (default-metadata))))
+        (metadata-active))))
 
