@@ -14,6 +14,7 @@
     (-> (game-runner/move game) (response))))
 
 (defn new-game [request]
-  (let [opponent-type (-> (keywordize (:params request)) (:opponent :computer))]
-    (-> (game-runner/init opponent-type) (response))))
+  (let [opponent-type (-> (:params request) (get "opponent" "keyword") (keyword))
+        size (-> (:params request) (get "size" "3") (read-string))]
+    (-> (game-runner/init opponent-type size) (response))))
 

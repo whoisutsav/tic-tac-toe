@@ -7,17 +7,18 @@ function Display(ctx, width, height) {
 }
 
 Display.prototype.render = function(game) {
+    let size = game.size;
     this.ctx.clearRect(0, 0, this.width, this.height);
     this.ctx.font = '30px sans-serif';
     this.ctx.textAlign = "center";
 
     for(let i=0; i<game.board.length; i++) {
-        let xPos = (i % 3) * this.width/3;
-        let yPos = Math.floor(i/3) * this.height/3;
+        let xPos = (i % size) * this.width/size;
+        let yPos = Math.floor(i/size) * this.height/size;
         let marker = game.board[i];
 
-        this.ctx.strokeRect(xPos, yPos, this.width/3, this.height/3);
-        this.ctx.fillText(marker, xPos + this.width/6, yPos + this.height/6);
+        this.ctx.strokeRect(xPos, yPos, this.width/size, this.height/size);
+        this.ctx.fillText(marker, xPos + this.width/(size*2), yPos + this.height/(size*2));
     }
 
     if (game.isOver()) {
@@ -25,9 +26,9 @@ Display.prototype.render = function(game) {
     }
 }
 
-Display.prototype.getCell = function(x, y) {
-    let row = Math.floor(y / (this.height/3));
-    let column = Math.floor(x / (this.width/3));
-    return row * 3 + column + 1;
+Display.prototype.getCell = function(x, y, size) {
+    let row = Math.floor(y / (this.height/size));
+    let column = Math.floor(x / (this.width/size));
+    return row * size + column + 1;
 }
 

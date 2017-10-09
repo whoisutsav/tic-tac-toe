@@ -42,10 +42,6 @@
        (map format-row)
        (reduce str)))
 
-(defn format-break [board]
-  (str "\t" (apply str (repeat 30 "-"))))
-
-
 (defn print-board [board]
   (println)
   (print (format-board board))

@@ -2,10 +2,12 @@
 
 function Game(board, currentPlayer, opponentPlayer) {
     this.board = board;
+    this.size = Math.round(Math.sqrt(board.length));
     this.currentPlayer = currentPlayer;
     this.opponentPlayer = opponentPlayer;
     this.state = null;
     this.winner = null;
+    this.disabled = false;
 }
 
 Game.prototype.isOver = function() {
@@ -22,9 +24,10 @@ Game.prototype.gameOverMessage = function() {
 }
 
 Game.prototype.advance = function(space, callback) {
-    if (this.isOver() || this.board[space-1] !== "_") {
+    if (this.disabled || this.isOver() || this.board[space-1] !== "_") {
         return;
     };
+    this.disabled = true;
 
     let that = this;
     let body = {
@@ -46,6 +49,7 @@ Game.prototype.advance = function(space, callback) {
         that.opponentPlayer = json["opponent-player"];
         that.state = json["state"];
         that.winner = json["winner"];
+        that.disabled = false;
         callback.call();
     });
 }
@@ -65,7 +69,7 @@ GameContext.prototype.init = function() {
 }
 
 GameContext.prototype.handleClick = function(e) {
-    let space = this.display.getCell(e.offsetX, e.offsetY);
+    let space = this.display.getCell(e.offsetX, e.offsetY, this.game.size);
     let that = this;
     this.game.advance(space, function() {
         that.display.render(that.game)
@@ -75,8 +79,9 @@ GameContext.prototype.handleClick = function(e) {
 function start() {
     let form = document.getElementById("gameSetupForm");
     let opponent = form.opponent.value;
+    let size = form.size.value;
 
-    fetch("http://localhost:3000/game?opponent=" + opponent, {
+    fetch("http://localhost:3000/game?opponent=" + opponent + "&size=" + size, {
         method: "POST"
     }).then(function(response) {
         return response.json();

@@ -3,12 +3,18 @@
 <body>
 
     <div id="game-setup">
-        <p>Choose type of game:</p>
         <form id="gameSetupForm">
+            <p>Choose type of game:</p>
             <input type="radio" name="opponent" value="computer" id="choiceComputer" checked="checked">
             <label for="choiceComputer">Computer</label>
             <input type="radio" name="opponent" value="hard-computer" id="choiceHardComputer">
             <label for="choiceHardComputer">Hard Computer</label>
+
+            <p>Choose board size:</p>
+            <input type="radio" name="size" value="3" id="choice3" checked="checked">
+            <label for="choice3">3x3</label>
+            <input type="radio" name="size" value="4" id="choice4">
+            <label for="choice4">4x4</label>
         </form>
 
         <button type="submit" onclick="start()" id="startButton">Start</button>

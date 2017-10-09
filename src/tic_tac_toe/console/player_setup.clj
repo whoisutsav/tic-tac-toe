@@ -10,10 +10,9 @@
 
 (defn- human-marker-loop [taken-marker]
   (loop [marker (console-ui/get-user-input)]
-    (let [error-str (:error (validation/marker marker taken-marker))]
-      (if (nil? error-str)
-        (keyword marker)
-        (recur (invalid-marker error-str))))))
+    (if-let [error-str (:error (validation/marker marker taken-marker))]
+      (recur (invalid-marker error-str))
+      (keyword marker))))
 
 (defmulti get-marker (fn [player-type taken-marker] player-type))
 
@@ -26,12 +25,9 @@
     (console-ui/print-computer-marker marker)
     marker))
 
-(defn make-player [player-type marker]
-  {:type player-type :marker marker})
-
 (defn setup-new 
   ([player-type] (setup-new player-type nil))
   ([player-type taken-marker] 
    (->> (get-marker player-type taken-marker)
-        (make-player player-type))))
+        (assoc {:type player-type} :marker))))
 

@@ -6,14 +6,15 @@
 (describe "new-game"
           (it "responds with new game"
               (should= {
-                         :board [:_ :_ :_
-                                 :_ :_ :_
-                                 :_ :_ :_ ] 
+                         :board [:_ :_ :_ :_
+                                 :_ :_ :_ :_
+                                 :_ :_ :_ :_
+                                 :_ :_ :_ :_ ] 
                          :current-player { :type :human-web :marker :X }
                          :opponent-player {:type :hard-computer :marker :O}
                          :state "active"
                          :winner nil }
-                       (:body (new-game {:params {"opponent" "hard-computer"}})))))
+                       (:body (new-game {:params {"opponent" "hard-computer" "size" "4"}})))))
 
 (describe "update-game"
           (it "responds with updated game"

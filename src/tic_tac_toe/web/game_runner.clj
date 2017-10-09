@@ -33,8 +33,8 @@
         (end-game updated-game)
         (recur-move updated-game))))
 
-(defn init [opponent-type]
-  (let [board (board/new-board 3)]
+(defn init [opponent-type size]
+  (let [board (board/new-board size)]
     (-> {:board board
          :current-player {:type :human-web :marker :X}
          :opponent-player {:type opponent-type :marker :O}}
