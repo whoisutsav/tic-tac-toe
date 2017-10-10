@@ -1,7 +1,7 @@
-(ns tic-tac-toe.player.computer-spec
+(ns tic-tac-toe.core.player.computer-spec
   (:require [speclj.core :refer :all]
-            [tic-tac-toe.player :refer [get-move]]
-            [tic-tac-toe.player.computer :refer :all])) 
+            [tic-tac-toe.core.player :refer [get-move]]
+            [tic-tac-toe.core.player.computer :refer :all])) 
 
 (describe "get-move"
           (around [it] (with-out-str (it)))

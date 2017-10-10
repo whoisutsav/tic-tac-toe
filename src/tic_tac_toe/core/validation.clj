@@ -1,6 +1,6 @@
-(ns tic-tac-toe.validation
-   (:require [tic-tac-toe.board :as board]
-             [tic-tac-toe.rules :as rules]))
+(ns tic-tac-toe.core.validation
+   (:require [tic-tac-toe.core.board :as board]
+             [tic-tac-toe.core.rules :as rules]))
 
 (defn move [board move]
   (cond

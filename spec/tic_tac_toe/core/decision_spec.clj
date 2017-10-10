@@ -1,6 +1,6 @@
-(ns tic-tac-toe.decision-spec
+(ns tic-tac-toe.core.decision-spec
   (:require [speclj.core :refer :all]
-            [tic-tac-toe.decision :refer :all]))
+            [tic-tac-toe.core.decision :refer :all]))
 
 (describe "winner"
           (it "returns nil for no winner"

@@ -1,7 +1,7 @@
 (ns tic-tac-toe.web.game-runner
-  (:require [tic-tac-toe.board :as board]
-            [tic-tac-toe.decision :as decision]
-            [tic-tac-toe.basic-game :as basic-game]))
+  (:require [tic-tac-toe.core.board :as board]
+            [tic-tac-toe.core.decision :as decision]
+            [tic-tac-toe.core.basic-game :as basic-game]))
 
 (defn- add-meta [params winner state]
   (merge params {:winner winner :state state}))

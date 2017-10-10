@@ -1,5 +1,5 @@
-(ns tic-tac-toe.decision
-  (:require [tic-tac-toe.board :as board]))
+(ns tic-tac-toe.core.decision
+  (:require [tic-tac-toe.core.board :as board]))
 
 (defn- rows [size]
   (->> (range 1 (inc (* size size)))

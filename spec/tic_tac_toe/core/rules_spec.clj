@@ -1,7 +1,7 @@
-(ns tic-tac-toe.rules-spec
+(ns tic-tac-toe.core.rules-spec
   (:require [speclj.core :refer :all]
-            [tic-tac-toe.board :as board]
-            [tic-tac-toe.rules :refer :all]))
+            [tic-tac-toe.core.board :as board]
+            [tic-tac-toe.core.rules :refer :all]))
 
 (describe "numeric?"
           (it "returns true if string is numeric"

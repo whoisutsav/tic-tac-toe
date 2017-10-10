@@ -1,5 +1,5 @@
-(ns tic-tac-toe.rules
-  (:require [tic-tac-toe.board :as board]))
+(ns tic-tac-toe.core.rules
+  (:require [tic-tac-toe.core.board :as board]))
 
 (defn numeric? [s]
   (not (nil? (re-matches #"^\d+$" s))))

@@ -1,7 +1,7 @@
 (ns tic-tac-toe.console.game-setup
   (:require [tic-tac-toe.console.ui :as console-ui]
             [tic-tac-toe.console.player-setup :as player-setup]
-            [tic-tac-toe.board :as board])) 
+            [tic-tac-toe.core.board :as board])) 
 
 (def invalid-option-message "Invalid option")
 

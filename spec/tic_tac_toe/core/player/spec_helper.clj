@@ -1,8 +1,8 @@
-(ns tic-tac-toe.player.spec-helper
-  (:require [tic-tac-toe.player :refer [get-move]]
-            [tic-tac-toe.player.hard-computer :refer :all] 
-            [tic-tac-toe.decision :as decision]
-            [tic-tac-toe.board :as board]))
+(ns tic-tac-toe.core.player.spec-helper
+  (:require [tic-tac-toe.core.player :refer [get-move]]
+            [tic-tac-toe.core.player.hard-computer :refer :all] 
+            [tic-tac-toe.core.decision :as decision]
+            [tic-tac-toe.core.board :as board]))
 
 (defn can-i-win? [my-player computer-player is-my-turn board]
   (let [my-marker (:marker my-player)

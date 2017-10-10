@@ -1,7 +1,7 @@
-(ns tic-tac-toe.player.human-spec
+(ns tic-tac-toe.console.human-spec
   (:require [speclj.core :refer :all]
-            [tic-tac-toe.player :refer [get-move]]
-            [tic-tac-toe.player.human :refer :all]))
+            [tic-tac-toe.core.player :refer [get-move]]
+            [tic-tac-toe.console.human :refer :all]))
 
 
 (describe "get-move"

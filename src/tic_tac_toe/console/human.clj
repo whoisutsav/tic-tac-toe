@@ -1,7 +1,7 @@
-(ns tic-tac-toe.player.human
-  (:require [tic-tac-toe.player :refer [get-move]] 
-            [tic-tac-toe.console.ui :as console-ui]
-            [tic-tac-toe.validation :as validation]))
+(ns tic-tac-toe.console.human
+  (:require [tic-tac-toe.core.player :refer [get-move]] 
+            [tic-tac-toe.core.validation :as validation]
+            [tic-tac-toe.console.ui :as console-ui]))
 
 (defn- invalid-move [error-str]
   (console-ui/print-message error-str)

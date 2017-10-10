@@ -1,7 +1,7 @@
 (ns tic-tac-toe.web.handlers-spec
   (:require [speclj.core :refer :all]
             [tic-tac-toe.web.handlers :refer :all]
-            [tic-tac-toe.board :as board]))
+            [tic-tac-toe.core.board :as board]))
 
 (describe "new-game"
           (it "responds with new game"

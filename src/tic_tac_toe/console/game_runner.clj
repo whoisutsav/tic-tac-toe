@@ -1,9 +1,9 @@
 (ns tic-tac-toe.console.game-runner
   (:require [tic-tac-toe.console.ui :as console-ui]
-            [tic-tac-toe.basic-game :as basic-game]
-            [tic-tac-toe.player :as player]
-            [tic-tac-toe.board :as board]
-            [tic-tac-toe.decision :as decision]))
+            [tic-tac-toe.core.basic-game :as basic-game]
+            [tic-tac-toe.core.player :as player]
+            [tic-tac-toe.core.board :as board]
+            [tic-tac-toe.core.decision :as decision]))
 
 
 (defn- take-turn [game]

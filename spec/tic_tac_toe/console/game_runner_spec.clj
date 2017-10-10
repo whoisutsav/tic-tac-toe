@@ -1,7 +1,9 @@
 (ns tic-tac-toe.console.game-runner-spec
   (:require [speclj.core :refer :all]
+            [tic-tac-toe.console.human]
+            [tic-tac-toe.core.player.computer]
             [tic-tac-toe.console.game-runner :refer :all]
-            [tic-tac-toe.board :as board]))
+            [tic-tac-toe.core.board :as board]))
 
 (describe "run"
           (it "plays vs. human until there is a winner"

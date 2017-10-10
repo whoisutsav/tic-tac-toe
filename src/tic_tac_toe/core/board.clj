@@ -1,4 +1,4 @@
-(ns tic-tac-toe.board) 
+(ns tic-tac-toe.core.board) 
 
 (def empty-space :_)
 

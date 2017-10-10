@@ -1,6 +1,6 @@
-(ns tic-tac-toe.board-spec
+(ns tic-tac-toe.core.board-spec
   (:require [speclj.core :refer :all]
-            [tic-tac-toe.board :refer :all]))
+            [tic-tac-toe.core.board :refer :all]))
 
 (describe "size"
           (it "returns size of board"

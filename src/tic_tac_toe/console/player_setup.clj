@@ -1,6 +1,6 @@
 (ns tic-tac-toe.console.player-setup
   (:require [tic-tac-toe.console.ui :as console-ui]
-            [tic-tac-toe.validation :as validation]))
+            [tic-tac-toe.core.validation :as validation]))
 
 (def default-markers [:O :X])
 

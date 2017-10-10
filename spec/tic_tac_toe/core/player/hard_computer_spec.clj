@@ -1,9 +1,9 @@
-(ns tic-tac-toe.player.hard-computer-spec
+(ns tic-tac-toe.core.player.hard-computer-spec
   (:require [speclj.core :refer :all]
-            [tic-tac-toe.player :refer [get-move]]
-            [tic-tac-toe.player.hard-computer :refer :all]
-            [tic-tac-toe.board :as board]
-            [tic-tac-toe.player.spec-helper :refer [can-i-win-all-boards?]]))
+            [tic-tac-toe.core.player :refer [get-move]]
+            [tic-tac-toe.core.player.hard-computer :refer :all]
+            [tic-tac-toe.core.board :as board]
+            [tic-tac-toe.core.player.spec-helper :refer [can-i-win-all-boards?]]))
 
 
 (describe "hard-computer"

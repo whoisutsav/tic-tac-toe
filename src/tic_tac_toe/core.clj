@@ -1,8 +1,8 @@
 (ns tic-tac-toe.core
-  (:require [tic-tac-toe.board :as board]
-            [tic-tac-toe.player.human]
-            [tic-tac-toe.player.computer]
-            [tic-tac-toe.player.hard-computer]
+  (:require [tic-tac-toe.core.board :as board]
+            [tic-tac-toe.console.human]
+            [tic-tac-toe.core.player.computer]
+            [tic-tac-toe.core.player.hard-computer]
             [tic-tac-toe.console.game-setup :as console-game-setup]
             [tic-tac-toe.console.game-runner :as console-runner]))
 

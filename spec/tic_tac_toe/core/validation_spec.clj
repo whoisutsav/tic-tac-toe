@@ -1,6 +1,6 @@
-(ns tic-tac-toe.validation-spec
+(ns tic-tac-toe.core.validation-spec
   (:require [speclj.core :refer :all]
-            [tic-tac-toe.validation :refer :all]))
+            [tic-tac-toe.core.validation :refer :all]))
 
 
 (describe "move"
