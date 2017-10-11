@@ -11,7 +11,8 @@
                          :current-player {:type :human-web :marker :X }
                          :opponent-player {:type :computer :marker :O}
                          :state "draw"
-                         :winner nil }
+                         :winner nil 
+                         :size 3}
                        (move {
                               :board [:O :X :O
                                       :O :X :O

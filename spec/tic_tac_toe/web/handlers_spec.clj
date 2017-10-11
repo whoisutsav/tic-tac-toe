@@ -13,7 +13,8 @@
                          :current-player { :type :human-web :marker :X }
                          :opponent-player {:type :hard-computer :marker :O}
                          :state "active"
-                         :winner nil }
+                         :winner nil 
+                         :size 4}
                        (:body (new-game {:params {"opponent" "hard-computer" "size" "4"}})))))
 
 (describe "update-game"
@@ -25,7 +26,8 @@
                          :current-player { :type :human-web :marker :O }
                          :opponent-player {:type :human-web :marker :X}
                          :state "active"
-                         :winner nil }
+                         :winner nil 
+                         :size 3 }
                        (:body (update-game 
                                 {:body {
                          :board ["X" "_" "_"

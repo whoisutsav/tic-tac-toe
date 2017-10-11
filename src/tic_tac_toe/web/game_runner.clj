@@ -4,7 +4,8 @@
             [tic-tac-toe.core.basic-game :as basic-game]))
 
 (defn- add-meta [params winner state]
-  (merge params {:winner winner :state state}))
+  (-> (merge params {:winner winner :state state})
+      (assoc :size (board/size (:board params)))))
 
 (defn- metadata-active [params]
   (add-meta params nil "active"))
