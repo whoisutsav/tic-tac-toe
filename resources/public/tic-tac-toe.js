@@ -1,3 +1,8 @@
+const boardWidth = 500;
+const boardFont = '30px sans-serif';
+const win = "win";
+const draw = "draw";
+
 function Game(params) {
     this.board = params["board"];
     this.size = params["size"];
@@ -17,51 +22,82 @@ Game.prototype.update = function(params) {
 }
 
 Game.prototype.isOver = function() {
-    return this.state === "win" || this.state === "draw";
+    return this.state === win || this.state === draw;
 }
 
 Game.prototype.isSpaceAvailable = function(space) {
-    return !this.isOver() && this.board[space-1] == "_";
+    return this.board[space-1] == "_";
 }
 
-function GameContext(params) {
-    this.game = new Game(params); 
-    this.gui = new GUI(document.getElementById("game").getContext('2d'));
-    this.width = 500;
-    this.height = 500;
-    this.listenForClick = true;
+function Controller(game) {
+    this.game = game; 
+    this.active = true;
 }
 
-GameContext.prototype.init = function() {
+Controller.prototype.init = function() {
     document.getElementById("game").addEventListener('click', this.handleClick.bind(this));
-    this.gui.render(this.game, this.width, this.height);
+    render(this.game);
 }
 
-GameContext.prototype.handleClick = function(e) {
-    let space = this.gui.getCell(e.offsetX, e.offsetY, this.width, this.height, this.game.size);
-    if (!this.listenForClick || !this.game.isSpaceAvailable(space)) {
+Controller.prototype.handleClick = function(e) {
+    let space = getSpace(e.offsetX, e.offsetY, this.game.size);
+    if (!this.active || !this.game.isSpaceAvailable(space)) {
         return;
     }
 
-    this.listenForClick = false;
-    let that = this;
-
-    let body = {"current-player": that.game.currentPlayer,
-                "opponent-player": that.game.opponentPlayer,
-                "board": that.game.board,
+    this.active = false;
+    let body = {"current-player": this.game.currentPlayer,
+                "opponent-player": this.game.opponentPlayer,
+                "board": this.game.board,
                 "move": space}
 
+    let that = this;
     fetch("http://localhost:3000/game", {
-        headers: {"Content-Type": "application/json"},
-        method: "PUT",
-        body: JSON.stringify(body) 
-    }).then(function(response) {
-        return response.json();   
-    }).then(function(json) {
-        that.game.update(json);
-        that.gui.render(that.game, that.width, that.height)
-        that.listenForClick = true;
+            headers: {"Content-Type": "application/json"},
+            method: "PUT",
+            body: JSON.stringify(body) })
+        .then(function(response) { return response.json();})
+        .then(function(json) {
+            that.game.update(json);
+            render(that.game)
+            if (!that.game.isOver()) { that.active = true; }
     });
+}
+
+function getSpace(x, y, size) {
+    let cellWidth = boardWidth/size;
+    let row = Math.floor(y/cellWidth);
+    let column = Math.floor(x/cellWidth);
+    return row * size + column + 1;
+}
+
+function render(game) {
+    let ctx = document.getElementById("game").getContext('2d');
+    ctx.clearRect(0, 0, boardWidth, boardWidth);
+    ctx.font = boardFont;
+    ctx.textAlign = "center";
+
+    let cellWidth = boardWidth/game.size;
+    for(let i=0; i< game.size; i++) {
+        for(let j = 0; j < game.size; j++) {
+            let x = i * cellWidth;
+            let y = j * cellWidth;
+            let marker = game.board[(j * game.size) + i];
+
+            ctx.strokeRect(x, y, cellWidth, cellWidth);
+            ctx.fillText(marker, x + cellWidth/2, y + cellWidth/2);
+        }
+    }
+    gameOverMessage(game);
+}
+
+function gameOverMessage(game) {
+    if (game.isOver()) {
+        let message = game.state === win ? 
+        "Player " + game.winner + " wins!" :
+        "Cats game.";
+        alert(message);
+    }
 }
 
 function start() {
@@ -70,14 +106,12 @@ function start() {
     let size = form.size.value;
 
     fetch("http://localhost:3000/game?opponent=" + opponent + "&size=" + size, {
-        method: "POST"
-    }).then(function(response) {
-        return response.json();
-    }).then(function(params) {
-        let gameContext = new GameContext(params);
-        gameContext.init();
-
-        document.getElementById("startButton").remove();
+            method: "POST" })
+        .then(function(response) { return response.json(); })
+        .then(function(params) {
+            let game = new Game(params);
+            let controller = new Controller(game);
+            controller.init();
+            document.getElementById("startButton").remove();
     });
 }
-
